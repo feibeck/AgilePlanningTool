@@ -21,4 +21,19 @@ class Apt_Model_Project
     /** @Column(type="integer") */
     public $sprintLength;
 
+    /**
+     * @ManyToOne(targetEntity="Apt_Model_User", cascade={"persist", "remove"}))
+     */
+    protected $productOwner;
+
+    public function setProductOwner($productOwner)
+    {
+        $this->productOwner = $productOwner;
+    }
+
+    public function getProductOwner()
+    {
+        return $this->productOwner;
+    }
+
 }

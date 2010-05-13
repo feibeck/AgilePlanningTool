@@ -59,6 +59,13 @@ class ProjectController extends Zend_Controller_Action
             $project->sprintLength = $form->getValue('length');
             $project->defaultVelocity  = $form->getValue('velocity');
 
+            $id = Zend_Auth::getInstance()->getIdentity()->id;
+            $user = $this->_em->find(
+                'Apt_Model_User',
+                Zend_Auth::getInstance()->getIdentity()->id
+            );
+            $project->setProductOwner($user);
+
             $this->_em->persist($project);
             $this->_em->flush();
 
