@@ -1,8 +1,6 @@
 <?php
 /**
- * Project Controller.
- * 
- * Shows the projects.
+ * Definition of ProjectController
  *
  * @category  AgilePlanningTool
  * @package   ProjectController
@@ -13,7 +11,7 @@
 
 /**
  * Project Controller.
- * 
+ *
  * Shows the projects.
  *
  * @category  AgilePlanningTool
@@ -25,34 +23,15 @@
 class ProjectController extends Zend_Controller_Action
 {
 
-    public function init()
-    {
-        /* Initialize action controller here */
-    }
-
     /**
      * Shows the users project list.
      */
     public function indexAction()
     {
-        $this->view->projectList = $this->_getProjectList();
+        $bootstrap = $this->getInvokeArg('bootstrap');
+        $em = $bootstrap->getResource('doctrine');
+        $this->view->projectList = $em->getRepository('Apt_Model_Project')->findAll();
     }
 
-    /**
-     * Returns the list of allowed projects for a user.
-     * 
-     * @return  array   $projectList    List of user-projects.
-     */
-    protected function _getProjectList()
-    {
-        $mockProject = new stdClass();
-        
-        $mockProject->id   = 1;
-        $mockProject->name = 'AgilePlanningTool';
-        
-        $projectList = array($mockProject);
-        
-        return $projectList;
-    }
 }
 
