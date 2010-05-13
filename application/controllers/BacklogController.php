@@ -78,10 +78,10 @@ class BacklogController extends Zend_Controller_Action
         $mockStory1->name                = 'Projekt Backlog anzeigen';
         $mockStory1->story               = 'Als Benutzer kann ich das Backlog eines Projekts sehen';
         $mockStory1->estimation          = null;
-        $mockStory1->comment             = '';
+        $mockStory1->comment             = 'Kein Kommentar :)';
         $mockStory1->files               = array();
-        $mockStory1->acceptanceCriterion = array();
-        $mockStory1->status              = null;
+        $mockStory1->acceptanceCriteria = array();
+        $mockStory1->status              = "Finished";
         
         $mockStory2->id                  = 2;
         $mockStory2->name                = 'Story PDF Export';
@@ -90,8 +90,8 @@ class BacklogController extends Zend_Controller_Action
         $mockStory2->estimation          = null;
         $mockStory2->comment             = '';
         $mockStory2->files               = array();
-        $mockStory2->acceptanceCriterion = array('Alle Daten der Story sind auf der Karte vorhanden');
-        $mockStory2->status              = null;
+        $mockStory2->acceptanceCriteria = array('Alle Daten der Story sind auf der Karte vorhanden');
+        $mockStory2->status              = "In progress";
         
         return array($mockStory1, $mockStory2);
     }
