@@ -74,7 +74,7 @@ class Apt_Auth_Adapter implements Zend_Auth_Adapter_Interface {
                 );
             }
 
-            if ($user->password != $this->_password) {
+            if ($user->getPassword() != $this->_password) {
                 return new Zend_Auth_Result(
                     Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID,
                     null
