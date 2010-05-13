@@ -6,7 +6,7 @@
 </p>
 <p>
     <ul>
-    <?php foreach($this->backlog as $story):?>
+    <?php foreach($this->project->getStories() as $story):?>
         <li><?php echo $story->getTitle(); ?> (<?php echo $story->getId(); ?>)
             <ul>
                 <li>Story: <?php echo $story->getDescription(); ?></li>
