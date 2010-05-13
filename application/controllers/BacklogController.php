@@ -50,8 +50,6 @@ class BacklogController extends Zend_Controller_Action
         $projectId = $this->_getParam('project');
 
         $this->view->project = $this->_em->find('Apt_Model_Project', $projectId);
-
-        $users = $em->getRepository('MyProject\Domain\User')->findBy(array('age' => 20));
     }
 
 }
