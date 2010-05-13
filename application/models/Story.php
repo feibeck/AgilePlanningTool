@@ -38,6 +38,9 @@ class Apt_Model_Story
      */
     protected $id;
 
+    /** @ManyToOne(targetEntity="Apt_Model_Project", cascade={"persist"})) */
+    protected $project;
+
     /** @Column(type="string", length=100) */
     protected $title;
 
@@ -251,5 +254,27 @@ class Apt_Model_Story
     public function getChangedBy()
     {
         return $this->changedBy;
+    }
+
+    /**
+     * Sets the project
+     *
+     * @param Apt_Model_Project $_project
+     * @return Apt_Model_Story
+     */
+    public function setProject(Apt_Model_Project $_project)
+    {
+        $this->project = $_project;
+        return $this;
+    }
+
+    /**
+     * Gets project
+     *
+     * @return Apt_Model_Project
+     */
+    public function getProject()
+    {
+        return $this->project;
     }
 }
