@@ -7,7 +7,6 @@
  * @author    Tobias Schlüter <tobias.schlueter@mayflower.de>
  * @copyright 2010 Mayflower GmbH
  * @license   New BSD License
- * @version   $Id$
  */
 
 /**
@@ -18,7 +17,6 @@
  * @author    Tobias Schlüter <tobias.schlueter@mayflower.de>
  * @copyright 2010 Mayflower GmbH
  * @license   New BSD License
- * @version   $Id$
  */
  class Apt_Acl extends Zend_Acl
  {
