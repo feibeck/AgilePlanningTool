@@ -171,4 +171,22 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
         $this->_currentUser = $_user;
         return $this;
     }
+
+/**
+     * @PreUpdate
+     */
+    public function beforeUpdate()
+    {
+        $this->changedOn = new DateTime("now");
+        $this->changedBy = $this->_currentUser;
+    }
+
+    /**
+     * @PrePersist
+     */
+    public function beforePersist()
+    {
+        $this->createdOn = new DateTime("now");
+        $this->createdBy = $this->_currentUser;
+    }
 }
