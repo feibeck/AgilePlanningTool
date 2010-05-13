@@ -1,7 +1,9 @@
 <?php
+use Doctrine\Common\Collections;
 
 /**
  * @Entity
+ * @HasLifecycleCallbacks
  * @Table(name="story")
  */
 class Apt_Model_Story
@@ -26,27 +28,68 @@ class Apt_Model_Story
     );
 
     /**
+     * @var Apt_Model_User
+     */
+    protected $_currentUser = null;
+
+    /**
      * @Id @Column(name="id", type="integer")
      * @GeneratedValue(strategy="AUTO")
      */
-    private $_id;
+    protected $id;
 
-    /** @Column(type="string", length=100, name="title") */
-    private $_title;
+    /** @Column(type="string", length=100) */
+    protected $title;
 
-    /** @Column(type="text", name="description") */
-    private $_description;
+    /** @Column(type="text") */
+    protected $description;
 
-    /** @Column(type="smallint", nullable=true, name="estimated") */
-    private $_estimatedPoints;
+    /** @Column(type="smallint", nullable=true) */
+    protected $estimatedPoints;
 
-    /** @Column(type="string", length=15, name="state") */
-    private $_state;
+    /** @Column(type="string", length=15) */
+    protected $state = self::STATE_NEW;
+
+    /** @OneToMany(targetEntity="Apt_Model_StoryComment", mappedBy="story", cascade={"persist", "remove"}) */
+    protected $comments;
+
+    /** @Column(type="datetime") */
+    protected $createdOn;
+
+    /** @ManyToOne(targetEntity="Apt_Model_User", cascade={"persist"})) */
+    protected $createdBy;
+
+    /** @Column(type="datetime", nullable=true) */
+    protected $changedOn;
+
+    /** @ManyToOne(targetEntity="Apt_Model_User", cascade={"persist"})) */
+    protected $changedBy;
 
     /**
-     * @OneToMany(targetEntity="Apt_Model_StoryComment", mappedBy="story", cascade={"persist", "remove"})
+     * Contructor
      */
-    private $comments;
+    public function __construct()
+    {
+        $this->comments = new Collections\ArrayCollection();
+    }
+
+    /**
+     * @PreUpdate
+     */
+    public function beforeUpdate()
+    {
+        $this->changedOn = new DateTime("now");
+        $this->changedBy = $this->_currentUser;
+    }
+
+    /**
+     * @PrePersist
+     */
+    public function beforePersist()
+    {
+        $this->createdOn = new DateTime("now");
+        $this->createdBy = $this->_currentUser;
+    }
 
     /**
      * Sets the story title.
@@ -56,8 +99,16 @@ class Apt_Model_Story
      */
     public function setTitle($_title)
     {
-        $this->_title = $_title;
+        $this->title = $_title;
         return $this;
+    }
+
+    /**
+     * Gets the title
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 
     /**
@@ -68,7 +119,7 @@ class Apt_Model_Story
      */
     public function setDescription($_description)
     {
-        $this->_description = $_description;
+        $this->description = $_description;
         return $this;
     }
 
@@ -77,21 +128,25 @@ class Apt_Model_Story
      *
      * @param integer $_estimatedPoints
      * @return Apt_Model_Story
+     * @throws Apt_Exception_InvalidArgument if invalid input
      */
     public function setEstimatedPoints($_estimatedPoints)
     {
-        $_estimatedPoints;
         if (null !== $_estimatedPoints
                 && !in_array((int)$_estimatedPoints, array(0, 1, 2, 3, 5, 8, 13))) {
             throw new Apt_Exception_InvalidArgument('Invalid estimated points given.');
         }
 
+        $this->estimatedPoints = $_estimatedPoints;
         return $this;
     }
 
     /**
-     * @param unknown_type $_state
+     * Sets the state.
+     *
+     * @param string $_state
      * @return Apt_Model_Story fluent interface
+     * @throws Apt_Exception_InvalidArgument if invalid input
      */
     public function setState($_state)
     {
@@ -99,25 +154,102 @@ class Apt_Model_Story
             throw new Apt_Exception_InvalidArgument('Invalid state given.');
         }
 
-        $this->_state = $_state;
+        $this->state = $_state;
         return $this;
+    }
+
+    /**
+     * Gets comments
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 
     /**
      * Adds a comment
      *
      * @param Apt_Model_StoryComment $_comment
-     * @return Apt_Model_Story fluent interface
+     * @return Apt_Model_Story
      */
     public function addComment(Apt_Model_StoryComment $_comment)
     {
-        $this->comments[] = $_comment;
+        $this->comments->add($_comment);
         return $this;
     }
 
-    public function getComments()
+    /**
+     * Sets the current user
+     *
+     * @param Apt_Model_User $_user
+     * @return Apt_Model_Story
+     */
+    public function setCurrentUser(Apt_Model_User $_user)
     {
-        return $this->comments;
+        $this->_currentUser = $_user;
+        return $this;
+    }
+    /**
+     * @return the $id
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
+    /**
+     * @return the $description
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return the $estimatedPoints
+     */
+    public function getEstimatedPoints()
+    {
+        return $this->estimatedPoints;
+    }
+
+    /**
+     * @return the $state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @return the $createdOn
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
+    }
+
+    /**
+     * @return the $createdBy
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @return the $changedOn
+     */
+    public function getChangedOn()
+    {
+        return $this->changedOn;
+    }
+
+    /**
+     * @return the $changedBy
+     */
+    public function getChangedBy()
+    {
+        return $this->changedBy;
+    }
 }
