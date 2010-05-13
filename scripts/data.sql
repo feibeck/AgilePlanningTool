@@ -1,1 +1,0 @@
-; Base data for AgilePlanningTool
