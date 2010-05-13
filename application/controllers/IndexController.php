@@ -28,7 +28,7 @@ class IndexController extends Zend_Controller_Action
      */
     public function indexAction()
     {
-        $this->view->name = Zend_Auth::getInstance()->getIdentity()->name;
+        $this->view->name = Zend_Auth::getInstance()->getIdentity()->getName();
     }
 
 }
