@@ -128,6 +128,26 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
     }
 
     /**
+     * Get the default velocity
+     *
+     * @return int The velocity
+     */
+    public function getDefaultVelocity()
+    {
+        return $this->defaultVelocity;
+    }
+
+    /**
+     * Set the default velocity
+     *
+     * @param int $velocity The velocity
+     */
+    public function setDefaultVelocity($velocity)
+    {
+        $this->defaultVelocity = $velocity;
+    }
+
+    /**
      * @return the $createdOn
      */
     public function getCreatedOn()
