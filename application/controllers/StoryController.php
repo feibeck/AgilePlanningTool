@@ -72,7 +72,13 @@ class StoryController extends Zend_Controller_Action
             $this->_em->persist($story);
             $this->_em->flush();
 
-            $this->_helper->redirector->gotoSimple('index', 'backlog');
+            $this->_helper->redirector->gotoSimple(
+                'index',
+                'backlog',
+                null,
+                array('project' => $projectId)
+            );
+            return;
 
         }
 

@@ -55,9 +55,9 @@ class ProjectController extends Zend_Controller_Action
         if ($request->isPost() && $form->isValid($request->getPost())) {
 
             $project = new Apt_Model_Project();
-            $project->name = $form->getValue('name');
-            $project->sprintLength = $form->getValue('length');
-            $project->defaultVelocity  = $form->getValue('velocity');
+            $project->setName($form->getValue('name'));
+            $project->setSprintLength($form->getValue('length'));
+            $project->setDefaultVelocity($form->getValue('velocity'));
 
             $user = $this->_em->find(
                 'Apt_Model_User',
