@@ -1,6 +1,7 @@
 <h1>Backlog</h1>
 <p>
     <h2>Project: <?php echo $this->project->name?></h2>
+    <p>Product Owner: <?php echo $this->project->getProductOwner()->getName(); ?></p>
     <a href="<?php echo $this->url(array('controller' => 'project'), null, true)?>">Back to projects</a>
 </p>
 <p>

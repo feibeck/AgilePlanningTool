@@ -4,7 +4,7 @@
  * @Entity
  * @Table(name="project")
  */
-class Apt_Model_Project
+class Apt_Model_Project implements Zend_Acl_Resource_Interface
 {
     /**
      * @Id @Column(type="integer")
@@ -36,4 +36,13 @@ class Apt_Model_Project
         return $this->productOwner;
     }
 
+    /**
+     * Returns the string identifier of the Resource
+     *
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return 'project::' . $this->id;
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * Backlog Controller.
- * 
+ *
  * Shows the backlog for a given project.
  *
  * @category  AgilePlanningTool
@@ -13,7 +13,7 @@
 
 /**
  * Backlog Controller.
- * 
+ *
  * Shows the backlog for a given project.
  *
  * @category  AgilePlanningTool
@@ -25,9 +25,17 @@
 class BacklogController extends Zend_Controller_Action
 {
 
+    /**
+     * Doctrine Entity Manager instance
+     *
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $_em;
+
     public function init()
     {
-        /* Initialize action controller here */
+        $bootstrap = $this->getInvokeArg('bootstrap');
+        $this->_em = $bootstrap->getResource('doctrine');
     }
 
     /**
@@ -38,42 +46,25 @@ class BacklogController extends Zend_Controller_Action
         if ('' === $this->_getParam('project', '')) {
             $this->_forward('index', 'project');
         }
-        
+
         $projectId = $this->_getParam('project');
-        
-        $this->view->project = $this->_getProject($projectId);
+
+        $this->view->project = $this->_em->find('Apt_Model_Project', $projectId);
         $this->view->backlog = $this->_getBacklog($projectId);
     }
 
     /**
-     * Returns the current project.
-     * 
-     * @param   integer     $projectId      Id of current project.
-     * 
-     * @return  stdClass    $project        Object of current project.
-     */
-    protected function _getProject($projectId)
-    {
-        $mockProject = new stdClass();
-        
-        $mockProject->id   = 1;
-        $mockProject->name = 'AgilePlanningTool';
-        
-        return $mockProject;
-    }
-    
-    /**
      * Returns the project backlog.
-     * 
+     *
      * @param   integer     $projectId      Id of current project.
-     * 
+     *
      * @return  array       $backlog        Backlog list with story-objects.
      */
     protected function _getBacklog($projectId)
     {
         $mockStory1 = new stdClass();
         $mockStory2 = new stdClass();
-                
+
         $mockStory1->id                  = 1;
         $mockStory1->name                = 'Projekt Backlog anzeigen';
         $mockStory1->story               = 'Als Benutzer kann ich das Backlog eines Projekts sehen';
@@ -82,7 +73,7 @@ class BacklogController extends Zend_Controller_Action
         $mockStory1->files               = array();
         $mockStory1->acceptanceCriteria = array();
         $mockStory1->status              = "Finished";
-        
+
         $mockStory2->id                  = 2;
         $mockStory2->name                = 'Story PDF Export';
         $mockStory2->story               = 'Als Benutzer kann ich mir eine Auswahl an Stories aus dem Backlog als PDF '
@@ -92,7 +83,7 @@ class BacklogController extends Zend_Controller_Action
         $mockStory2->files               = array();
         $mockStory2->acceptanceCriteria = array('Alle Daten der Story sind auf der Karte vorhanden');
         $mockStory2->status              = "In progress";
-        
+
         return array($mockStory1, $mockStory2);
     }
 }
