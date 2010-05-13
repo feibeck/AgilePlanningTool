@@ -1,38 +1,36 @@
 <?php
 
-require_once '../library/Doctrine/Common/ClassLoader.php';
+define('APPLICATION_ENV', 'development');
 
-$classLoader = new \Doctrine\Common\ClassLoader('Doctrine', __DIR__ . '/../library');
-$classLoader->register();
+define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
+
+set_include_path(implode(PATH_SEPARATOR, array(
+    realpath(APPLICATION_PATH . '/../library'),
+    get_include_path(),
+)));
+
+require_once 'Zend/Application.php';
+
+// Create application, bootstrap, and run
+$application = new Zend_Application(
+    APPLICATION_ENV,
+    APPLICATION_PATH . '/configs/application.ini'
+);
+
+$application->getBootstrap()->bootstrap('doctrine');
+$em = $application->getBootstrap()->getResource('doctrine');
 
 $classLoader = new \Doctrine\Common\ClassLoader('Symfony', __DIR__ . '/../library');
 $classLoader->register();
 
-$configFile = getcwd() . DIRECTORY_SEPARATOR . 'cli-config.php';
-
-$helperSet = null;
-if (file_exists($configFile)) {
-    if ( ! is_readable($configFile)) {
-        trigger_error(
-            'Configuration file [' . $configFile . '] does not have read permission.', E_ERROR
-        );
-    }
-
-    require $configFile;
-
-    foreach ($GLOBALS as $helperSetCandidate) {
-        if ($helperSetCandidate instanceof \Symfony\Components\Console\Helper\HelperSet) {
-            $helperSet = $helperSetCandidate;
-            break;
-        }
-    }
-}
-
-$helperSet = ($helperSet) ?: new \Symfony\Components\Console\Helper\HelperSet();
+$helpers = new \Symfony\Components\Console\Helper\HelperSet(array(
+    'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($em->getConnection()),
+    'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($em)
+));
 
 $cli = new \Symfony\Components\Console\Application('Doctrine Command Line Interface', Doctrine\Common\Version::VERSION);
 $cli->setCatchExceptions(true);
-$cli->setHelperSet($helperSet);
+$cli->setHelperSet($helpers);
 $cli->addCommands(array(
     // DBAL Commands
     new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand(),
