@@ -1,0 +1,12 @@
+<h1>Backlog</h1>
+<p>
+    <h2>Project: <?php echo $this->project->name?></h2>
+    <a href="<?php echo $this->url(array('controller' => 'project'), null, true)?>">Back to projects</a>
+</p>
+<p>
+    <ul>
+    <?php foreach($this->backlog as $story):?>
+        <li><?php echo $story->name?> (<?php echo $story->id?>)</li>
+    <?php endforeach;?>
+    </ul>
+</p>

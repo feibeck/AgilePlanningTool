@@ -1,0 +1,9 @@
+<h1>Projects</h1>
+<p>
+    <ul>
+    <?php foreach($this->projectList as $project):?>
+        <?php $backlogUrl = $this->url(array('controller' => 'backlog', 'project' => $project->id), null, true)?>
+        <li><a href="<?php echo $backlogUrl?>"><?php echo $project->name?> (<?php echo $project->id?>)</a></li>
+    <?php endforeach;?>
+    </ul>
+</p>
