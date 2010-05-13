@@ -50,7 +50,7 @@ class BacklogController extends Zend_Controller_Action
         $projectId = $this->_getParam('project');
 
         $this->view->project = $this->_em->find('Apt_Model_Project', $projectId);
-        $this->view->backlog = $this->_getBacklog($projectId);
+        $this->view->backlog = $this->_em->getRepository('Apt_Model_Story')->findAll();
     }
 
     /**

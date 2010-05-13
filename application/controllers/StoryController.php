@@ -55,6 +55,12 @@ class StoryController extends Zend_Controller_Action
             $story->setDescription($form->getValue('description'));
             $story->setState(Apt_Model_Story::STATE_NEW);
 
+            $user = $this->_em->find(
+                'Apt_Model_User',
+                Zend_Auth::getInstance()->getIdentity()->getId()
+            );
+            $story->setCurrentUser($user);
+
             $this->_em->persist($story);
             $this->_em->flush();
 
