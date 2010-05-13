@@ -1,26 +1,35 @@
 <?php
+/**
+ * Definition of IndexController
+ *
+ * @category  AgilePlanningTool
+ * @package   Default
+ * @author    Florian Eibeck <florian.eibeck@mayflower.de>
+ * @copyright 2010 Mayflower GmbH
+ * @license   New BSD License
+ */
 
+/**
+ * Homepage controller
+ *
+ * @category  AgilePlanningTool
+ * @package   Default
+ * @author    Florian Eibeck <florian.eibeck@mayflower.de>
+ * @copyright 2010 Mayflower GmbH
+ * @license   New BSD License
+ */
 class IndexController extends Zend_Controller_Action
 {
 
-    protected $_em = null;
-
-    public function init()
-    {
-        $registry = Zend_Registry::getInstance();
-        $this->_em = $registry->entitymanager;
-    }
-
+    /**
+     * Show the homepage
+     *
+     * @return void
+     */
     public function indexAction()
     {
-        $test = new Apt_Model_User;
-        $test->name = 'Test';
-        $test->username = "A";
-        $test->password = "B";
-        $this->_em->persist($test);
-        $this->_em->flush();
+        $this->view->name = Zend_Auth::getInstance()->getIdentity()->name;
     }
-
 
 }
 

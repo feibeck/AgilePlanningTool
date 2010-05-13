@@ -2,9 +2,9 @@
 
 /**
  * @Entity
- * @Table(name="user")
+ * @Table(name="project")
  */
-class Apt_Model_User
+class Apt_Model_Project
 {
     /**
      * @Id @Column(type="integer")
@@ -15,10 +15,10 @@ class Apt_Model_User
     /** @Column(type="string") */
     public $name;
 
-    /** @Column(type="string") */
-    public $username;
+    /** @Column(type="integer") */
+    public $defaultVelocity;
 
-    /** @Column(type="string") */
-    public $password;
+    /** @Column(type="integer") */
+    public $sprintLength;
 
 }

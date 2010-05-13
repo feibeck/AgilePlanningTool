@@ -1,8 +1,6 @@
 <?php
 /**
- * Project Controller.
- * 
- * Shows the projects.
+ * Definition of ProjectController
  *
  * @category  AgilePlanningTool
  * @package   ProjectController
@@ -13,7 +11,7 @@
 
 /**
  * Project Controller.
- * 
+ *
  * Shows the projects.
  *
  * @category  AgilePlanningTool
@@ -25,9 +23,17 @@
 class ProjectController extends Zend_Controller_Action
 {
 
+    /**
+     * Doctrine Entity Manager instance
+     *
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $_em;
+
     public function init()
     {
-        /* Initialize action controller here */
+        $bootstrap = $this->getInvokeArg('bootstrap');
+        $this->_em = $bootstrap->getResource('doctrine');
     }
 
     /**
@@ -35,24 +41,32 @@ class ProjectController extends Zend_Controller_Action
      */
     public function indexAction()
     {
-        $this->view->projectList = $this->_getProjectList();
+        $this->view->projectList = $this->_em->getRepository('Apt_Model_Project')->findAll();
     }
 
     /**
-     * Returns the list of allowed projects for a user.
-     * 
-     * @return  array   $projectList    List of user-projects.
+     * Add a new Project
      */
-    protected function _getProjectList()
+    public function addAction()
     {
-        $mockProject = new stdClass();
-        
-        $mockProject->id   = 1;
-        $mockProject->name = 'AgilePlanningTool';
-        
-        $projectList = array($mockProject);
-        
-        return $projectList;
+        $form = new Apt_Form_Project(array('method' => 'POST'));
+
+        $request = $this->getRequest();
+        if ($request->isPost() && $form->isValid($request->getPost())) {
+
+            $project = new Apt_Model_Project();
+            $project->name = $form->getValue('name');
+            $project->sprintLength = $form->getValue('length');
+            $project->defaultVelocity  = $form->getValue('velocity');
+
+            $this->_em->persist($project);
+            $this->_em->flush();
+
+            $this->_helper->redirector->gotoSimple('index');
+
+        }
+
+        $this->view->form = $form;
     }
 }
 
