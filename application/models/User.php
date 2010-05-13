@@ -21,5 +21,4 @@ class Apt_Model_User
     /** @Column(type="string") */
     public $password;
 
-
 }
