@@ -2,7 +2,7 @@
 
 /**
  * @Entity
- * HasLifecycleCallbacks
+ * @HasLifecycleCallbacks
  * @Table(name="story_comment")
  */
 class Apt_Model_StoryComment
