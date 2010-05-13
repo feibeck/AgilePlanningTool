@@ -97,6 +97,28 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
     }
 
     /**
+     * Gets the id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Sets the id
+     *
+     * @param integer $_id
+     * @return Apt_Model_Project
+     */
+    public function setId($_id)
+    {
+        $this->id = $_id;
+        return $this;
+    }
+
+    /**
      * Returns the string identifier of the Resource
      *
      * @return string
