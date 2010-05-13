@@ -3,6 +3,7 @@ use Doctrine\Common\Collections;
 
 /**
  * @Entity
+ * @HasLifecycleCallbacks
  * @Table(name="project")
  */
 class Apt_Model_Project implements Zend_Acl_Resource_Interface
