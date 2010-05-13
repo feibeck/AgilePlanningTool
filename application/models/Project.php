@@ -172,7 +172,7 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
         return $this;
     }
 
-/**
+    /**
      * @PreUpdate
      */
     public function beforeUpdate()
