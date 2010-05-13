@@ -6,26 +6,12 @@
 </p>
 <p>
     <ul>
-    <?php foreach($this->backlog as $story):?>
-        <li><?php echo $story->name?> (<?php echo $story->id?>)
+    <?php foreach($this->project->getStories() as $story):?>
+        <li><?php echo $story->getTitle(); ?> (<?php echo $story->getId(); ?>)
             <ul>
-                <li>Story: <?php echo $story->story?></li>
-                <li>Estimation: <?php echo $story->estimation?></li>
-                <li>Comment: <?php echo $story->comment?></li>
-                <li>Files:
-                    <ul>
-                    <?php foreach($story->files as $filename):?>
-                        <li><?php echo $filename?></li>
-                    <?php endforeach?>
-                    </ul>
-                </li>
-                <li>Acceptance criteria:
-                    <ul>
-                    <?php foreach($story->acceptanceCriteria as $criterion):?>
-                        <li><?php echo $criterion?></li>
-                    <?php endforeach?>
-                    </ul>
-                <li>Status: <?php echo $story->status?></li>
+                <li>Story: <?php echo $story->getDescription(); ?></li>
+                <li>Estimation: <?php echo $story->getEstimatedPoints(); ?></li>
+                <li>Status: <?php echo $story->getState(); ?></li>
             </ul>
         </li>
     <?php endforeach?>

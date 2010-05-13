@@ -43,6 +43,8 @@ class StoryController extends Zend_Controller_Action
      */
     public function addAction()
     {
+        $projectId = (int)$this->_getParam('project', 0);
+
         $form = new Apt_Form_Story(array('method' => 'POST'));
 
         $request = $this->getRequest();
@@ -54,6 +56,18 @@ class StoryController extends Zend_Controller_Action
             $story->setEstimatedPoints($form->getValue('estimation'));
             $story->setDescription($form->getValue('description'));
             $story->setState(Apt_Model_Story::STATE_NEW);
+
+            $user = $this->_em->find(
+                'Apt_Model_User',
+                Zend_Auth::getInstance()->getIdentity()->getId()
+            );
+            $story->setCurrentUser($user);
+
+            $project = $this->_em->find(
+                'Apt_Model_Project',
+                $projectId
+            );
+            $story->setProject($project);
 
             $this->_em->persist($story);
             $this->_em->flush();
