@@ -192,6 +192,7 @@ class Apt_Model_Story
         $this->_currentUser = $_user;
         return $this;
     }
+
     /**
      * @return the $id
      */
