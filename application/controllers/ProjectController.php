@@ -61,7 +61,7 @@ class ProjectController extends Zend_Controller_Action
 
             $user = $this->_em->find(
                 'Apt_Model_User',
-                Zend_Auth::getInstance()->getIdentity()->id
+                Zend_Auth::getInstance()->getIdentity()->getId()
             );
             $project->setProductOwner($user);
 
@@ -69,6 +69,7 @@ class ProjectController extends Zend_Controller_Action
             $this->_em->flush();
 
             $this->_helper->redirector->gotoSimple('index');
+            return;
 
         }
 
