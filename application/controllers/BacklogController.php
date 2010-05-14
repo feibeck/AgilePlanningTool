@@ -63,10 +63,9 @@ class BacklogController extends Zend_Controller_Action
             $story = $this->_em->find('Apt_Model_Story', $id);
             $story->setPriority($priority + 1);
             $this->_em->persist($story);
-            $this->_em->flush();
         }
 
-
+        $this->_em->flush();
 
     }
 
