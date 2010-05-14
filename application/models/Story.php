@@ -176,6 +176,16 @@ class Apt_Model_Story
     }
 
     /**
+     * Check if the story has any comments
+     *
+     * @return boolean True if the story has comments, false otherwise
+     */
+    public function hasComments()
+    {
+        return count($this->getComments()) > 0;
+    }
+
+    /**
      * Adds a comment
      *
      * @param Apt_Model_StoryComment $_comment
