@@ -131,15 +131,29 @@ class StoryController extends Zend_Controller_Action
         $this->getResponse()->setHeader('Content-Type', 'application/pdf');
         
         $projectId = (int) $this->_getParam('project', 0);
-        
-        $project = $this->_em->find(
-            'Apt_Model_Project',
-            $projectId
-        );
+        $storyId   = (int) $this->_getParam('story', 0);
 
         $storyCards = new Apt_Pdf_Story(new Zend_Pdf());
         
-        $storyCards->setStories($project->getStories());
+        
+        if (!empty($storyId)) {
+            $story = $this->_em->find(
+                'Apt_Model_Story',
+                $storyId
+            );
+            
+            if ($projectId == $story->getProject()->getId()) {
+                $storyCards->addStory($story);
+            }
+            
+        } else {
+            $project = $this->_em->find(
+                'Apt_Model_Project',
+                $projectId
+            );
+            $storyCards->setStories($project->getStories());
+        }
+        
         
         $this->view->pdf = $storyCards->render();
     }
