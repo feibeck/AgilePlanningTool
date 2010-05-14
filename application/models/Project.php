@@ -31,7 +31,10 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
     /** @ManyToOne(targetEntity="Apt_Model_User", cascade={"persist"})) */
     protected $productOwner;
 
-    /** @OneToMany(targetEntity="Apt_Model_Story", mappedBy="project", cascade={"persist", "remove"}) */
+    /**
+     * @OneToMany(targetEntity="Apt_Model_Story", mappedBy="project", cascade={"persist", "remove"})
+     * @OrderBy({"priority" = "ASC"})
+     */
     protected $stories;
 
     /** @Column(type="datetime") */
