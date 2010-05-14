@@ -150,4 +150,16 @@ class Apt_Model_StoryComment
         $this->createdOn = new DateTime("now");
         $this->createdBy = $this->_currentUser;
     }
+
+    /**
+     * Sets the current user
+     *
+     * @param Apt_Model_User $_user
+     * @return Apt_Model_Story
+     */
+    public function setCurrentUser(Apt_Model_User $_user)
+    {
+        $this->_currentUser = $_user;
+        return $this;
+    }
 }

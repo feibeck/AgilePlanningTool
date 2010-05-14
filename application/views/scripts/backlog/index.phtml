@@ -14,6 +14,13 @@
                 <li>Estimation: <?php echo $story->getEstimatedPoints(); ?></li>
                 <li>Status: <?php echo $story->getState(); ?></li>
             </ul>
+            Comments:
+            <ul>
+            <?php foreach ($story->getComments() AS $comment): ?>
+                <li><?php echo nl2br($comment->getComment()); ?> (von <?php echo $comment->getCreatedBy()->getName(); ?>)</li>
+            <?php endforeach; ?>
+            </ul>
+            <a href="/story/add-comment/story/<?php echo $story->getId(); ?>">Add comment</a>
         </li>
     <?php endforeach?>
     </ul>
