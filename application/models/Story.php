@@ -58,13 +58,13 @@ class Apt_Model_Story
 
     /**
      * @OneToMany(targetEntity="Apt_Model_StoryComment", mappedBy="story", cascade={"persist", "remove"})
-     * @OrderBy({"createdBy" = "ASC"})
+     * @OrderBy({"createdOn"="ASC"})
      */
     protected $comments;
 
     /**
      * @OneToMany(targetEntity="Apt_Model_StoryCriteria", mappedBy="story", cascade={"persist", "remove"})
-     * @OrderBy({"createdBy" = "ASC"})
+     * @OrderBy({"createdOn"="ASC"})
      */
     protected $criterias;
 
