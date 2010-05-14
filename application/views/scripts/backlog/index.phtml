@@ -102,6 +102,10 @@ $(function() {
             });
         }
     });
+
+    <?php if ($this->storyId > 0): ?>
+    $('#storylist').accordion('activate', '#story_<?php echo $this->storyId; ?> > h3');
+    <?php endif; ?>
 });
 
 <?php $this->headScript()->captureEnd() ?>

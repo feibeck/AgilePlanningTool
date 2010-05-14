@@ -75,7 +75,10 @@ class StoryController extends Zend_Controller_Action
                 'index',
                 'backlog',
                 null,
-                array('project' => $projectId)
+                array(
+                    'project' => $projectId,
+                    'story' => $story->getId()
+                )
             );
             return;
 
@@ -116,7 +119,10 @@ class StoryController extends Zend_Controller_Action
                 'index',
                 'backlog',
                 null,
-                array('project' => $story->getProject()->getId())
+                array(
+                    'project' => $story->getProject()->getId(),
+                    'story'   => $story->getId()
+                )
             );
             return;
 
@@ -124,23 +130,23 @@ class StoryController extends Zend_Controller_Action
 
         $this->view->form = $form;
     }
-    
+
     public function pdfExportAction()
     {
-        $this->_helper->layout->disableLayout(); 
+        $this->_helper->layout->disableLayout();
         $this->getResponse()->setHeader('Content-Type', 'application/pdf');
-        
+
         $projectId = (int) $this->_getParam('project', 0);
-        
+
         $project = $this->_em->find(
             'Apt_Model_Project',
             $projectId
         );
 
         $storyCards = new Apt_Pdf_Story(new Zend_Pdf());
-        
+
         $storyCards->setStories($project->getStories());
-        
+
         $this->view->pdf = $storyCards->render();
     }
 }

@@ -49,6 +49,9 @@ class BacklogController extends Zend_Controller_Action
 
         $projectId = $this->_getParam('project');
 
+        $storyId = $this->_getParam('story', 0);
+        $this->view->storyId = $storyId;
+
         $this->view->project = $this->_em->find('Apt_Model_Project', $projectId);
     }
 
