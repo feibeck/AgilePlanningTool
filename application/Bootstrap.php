@@ -20,19 +20,78 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         $viewRenderer->setView($view);
 
+        return $view;
+    }
+
+    /**
+     * Initialise jQuery
+     *
+     * @return void
+     */
+    protected function _initJquery()
+    {
+        $this->bootstrap('View');
+        $view = $this->getResource('View');
+
         $view->headScript()->appendFile(
-            "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
+            "/jquery/js/jquery-1.4.2.min.js"
         );
         $view->headScript()->appendFile(
-            "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js"
+            "/jquery/js/jquery-ui-1.8.1.custom.min.js"
         );
 
         $view->headLink()->appendStylesheet(
-            "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/hot-sneaks/jquery-ui.css",
+            "/jquery/css/hot-sneaks/jquery-ui-1.8.1.custom.css",
             "all"
         );
+    }
 
-        return $view;
+    /**
+     * Initialise CSS Grid Layout
+     *
+     * @return void
+     */
+    protected function _initCssGrid()
+    {
+        $this->bootstrap('View');
+        $view = $this->getResource('View');
+
+        $view->headLink()
+            ->appendStylesheet(
+                "/fluid960gs/css/reset.css",
+                "screen"
+            )
+            ->appendStylesheet(
+                "/fluid960gs/css/text.css",
+                "screen"
+            )
+            ->appendStylesheet(
+                "/fluid960gs/css/grid.css",
+                "screen"
+            )
+            ->appendStylesheet(
+                "/fluid960gs/css/layout.css",
+                "screen"
+            )
+            ->appendStylesheet(
+                "/fluid960gs/css/nav.css",
+                "screen"
+            )
+            ->appendStylesheet(
+                "/fluid960gs/css/ie6.css",
+                "screen",
+                'IE 6'
+            )
+            ->appendStylesheet(
+                "/fluid960gs/css/ie.css",
+                "screen",
+                'IE 7'
+            );
+
+            $view->headScript()->appendFile(
+                "/fluid960gs/jquery-fluid16.js"
+            );
+
     }
 
     /**
