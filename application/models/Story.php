@@ -347,4 +347,23 @@ class Apt_Model_Story
     {
         return $this->priority;
     }
+    
+    /**
+     * Returns an absolute Url to the story.
+     * 
+     * @return string $url
+     */
+    public function getAbsoluteUrl()
+    {
+        $urlHelper   = Zend_Controller_Action_HelperBroker::getStaticHelper('Url');
+        $request     = Zend_Controller_Front::getInstance()->getRequest();
+        $absoluteUrl = $request->getScheme() . '://' . $request->getHttpHost();
+        
+        $urlParams   = array(
+            'story'      => $this->id,
+            'project' => $this->project->getId()
+        );
+        
+        return $absoluteUrl . $urlHelper->simple('index', 'story', null, $urlParams);
+    }
 }
