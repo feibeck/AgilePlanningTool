@@ -53,7 +53,13 @@ class Apt_Model_Story
     /** @Column(type="string", length=15) */
     protected $state = self::STATE_NEW;
 
-    /** @OneToMany(targetEntity="Apt_Model_StoryComment", mappedBy="story", cascade={"persist", "remove"}) */
+    /** @Column(type="integer") */
+    protected $priority;
+
+    /**
+     * @OneToMany(targetEntity="Apt_Model_StoryComment", mappedBy="story", cascade={"persist", "remove"})
+     * @OrderBy({"createdBy" = "ASC"})
+     */
     protected $comments;
 
     /** @Column(type="datetime") */
@@ -270,12 +276,34 @@ class Apt_Model_Story
     }
 
     /**
-     * Gets project
+     * Gets the associated project
      *
      * @return Apt_Model_Project
      */
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Sets the priority
+     *
+     * @param integer $_priority
+     * @return Apt_Model_Story
+     */
+    public function setPriority($_priority)
+    {
+        $this->priority = (int)$_priority;
+        return $this;
+    }
+
+    /**
+     * Gets the priority
+     *
+     * @return integer
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 }
