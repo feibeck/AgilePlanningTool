@@ -118,10 +118,10 @@ class Apt_Pdf_Storypage_A6OneCard
         if (empty($content)) {
             return;
         }
-
+        
         $url       = sprintf(self::CODE_URL, self::CODE_SIZE, self::CODE_SIZE, $content);
-        $imageFile = sys_get_temp_dir() . '/AptStoryCode' . $this->_story->getId() . '.png';
-
+        $imageFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'AptStoryCode' . $this->_story->getId() . '.png';
+        
         if (false == file_exists($imageFile)) {
             file_put_contents($imageFile, file_get_contents($url));
         }
