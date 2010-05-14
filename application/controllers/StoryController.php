@@ -149,4 +149,77 @@ class StoryController extends Zend_Controller_Action
 
         $this->view->pdf = $storyCards->render();
     }
+
+    public function addCriterionAction()
+    {
+        $storyId = (int)$this->_getParam('story', 0);
+
+        $form = new Apt_Form_Criterion(array('method' => 'POST'));
+
+        $request = $this->getRequest();
+
+        if ($request->isPost() && $form->isValid($request->getPost())) {
+
+            $criterion = new Apt_Model_StoryCriterion();
+
+            $criterion->setCriterion($form->getValue('criterion'));
+
+            $user = $this->_em->find(
+                'Apt_Model_User',
+                Zend_Auth::getInstance()->getIdentity()->getId()
+            );
+            $criterion->setCurrentUser($user);
+
+            $story = $this->_em->find(
+                'Apt_Model_Story',
+                $storyId
+            );
+            $criterion->setStory($story);
+
+            $criterion->setIsAccepted(false);
+
+            $this->_em->persist($criterion);
+            $this->_em->flush();
+
+            $this->_helper->redirector->gotoSimple(
+                'index',
+                'backlog',
+                null,
+                array(
+                    'project' => $story->getProject()->getId(),
+                    'story'   => $story->getId()
+                )
+            );
+            return;
+
+        }
+
+        $this->view->form = $form;
+    }
+
+    public function updateCriterionAction()
+    {
+        $this->_helper->layout()->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+
+        $criterion = $this->getRequest()->getPost('criterion');
+        $checked = $this->getRequest()->getPost('checked');
+
+        $checked = $checked == 'true' ? true : false;
+
+        $criterion = $this->_em->find('Apt_Model_StoryCriterion', $criterion);
+        $criterion->setIsAccepted($checked);
+
+        $user = $this->_em->find(
+            'Apt_Model_User',
+            Zend_Auth::getInstance()->getIdentity()->getId()
+        );
+        $criterion->setCurrentUser($user);
+
+        $this->_em->persist($criterion);
+        $this->_em->flush();
+
+        $this->_helper->json(true);
+    }
+
 }

@@ -48,6 +48,38 @@
 
                     <p>Status: <?php echo $story->getState(); ?></p>
 
+                    <?php if (count($story->getCriteria()) > 0): ?>
+
+                    <p><strong>Acceptance Criteria</strong></p>
+
+                    <table>
+                        <colgroup>
+                            <col style="width: 20px;"/>
+                            <col />
+                        </colgroup>
+                        <tbody>
+                        <?php foreach ($story->getCriteria() AS $criterion): ?>
+                        <tr>
+                            <td style="padding: 2px; vertical-align: middle;">
+                                <input
+                                    class="criteria_accepted"
+                                    id="criterion_<?php echo $criterion->getId(); ?>"
+                                    type="checkbox"
+                                    <?php if ($criterion->getIsAccepted()): ?>
+                                    checked="checked"
+                                    <?php endif; ?>
+                                />
+                            </td>
+                            <td style="padding: 2px; vertical-align: middle;"><?php echo $criterion->getCriterion(); ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+
+                    <?php else: ?>
+                    <p><strong>No Acceptance Criteria</strong></p>
+                    <?php endif; ?>
+
                     <?php if ($story->hasComments()): ?>
                         <strong>Comments:</strong>
                         <?php foreach ($story->getComments() AS $comment): ?>
@@ -68,9 +100,8 @@
                     });
                     <?php $this->headScript()->captureEnd() ?>
                     <a class="button" href="/story/add-comment/story/<?php echo $story->getId(); ?>">Add Comment</a>
-
+                    <a class="button" href="/story/add-criterion/story/<?php echo $story->getId(); ?>">Add Acceptance Criterion</a>
                     <a class="button" href="<?php echo $this->url(array('controller' => 'story', 'action' => 'pdf-export', 'project' => $this->project->getId(), 'story' => $story->getId()), null, true);?>" target="_new">PDF export</a>
-
                 </div>
             </div>
             <?php endforeach; ?>
@@ -82,6 +113,23 @@
 <?php $this->headScript()->captureStart() ?>
 
 $(function() {
+
+    $(".criteria_accepted").change(function(event) {
+        var id = event.target.id;
+
+        var checked = event.target.checked;
+
+        var regex = /^criterion_(\d+)$/;
+        var match = regex.exec(id);
+        var id = match[1];
+
+        var send = {criterion: id, checked: checked};
+        $.post("/story/update-criterion", send, function(theResponse){
+            console.debug("Criterion updated");
+            console.debug(theResponse);
+        });
+    });
+
     var stop = false;
     $("#storylist h3").click(function(event) {
         if (stop) {
@@ -113,6 +161,7 @@ $(function() {
     <?php if ($this->storyId > 0): ?>
     $('#storylist').accordion('activate', '#story_<?php echo $this->storyId; ?> > h3');
     <?php endif; ?>
+
 });
 
 <?php $this->headScript()->captureEnd() ?>
