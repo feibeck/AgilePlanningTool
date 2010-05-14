@@ -5,23 +5,63 @@
     <a href="<?php echo $this->url(array('controller' => 'project'), null, true)?>">Back to projects</a>
     <a href="<?php echo $this->url(array('controller' => 'story', 'action' => 'add', 'project' => $this->project->getId()), null, true); ?>">Add Story</a>
 </p>
-<p>
-    <ul>
-    <?php foreach($this->project->getStories() as $story):?>
-        <li><?php echo $story->getTitle(); ?> (<?php echo $story->getId(); ?>)
+
+<?php $this->headScript()->captureStart() ?>
+
+$(function() {
+    var stop = false;
+    $("#accordion h3").click(function(event) {
+        if (stop) {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            stop = false;
+        }
+    });
+    $("#accordion").accordion({
+        header: "> div > h3",
+        collapsible: true,
+        active: false
+    }).sortable({
+        axis: "y",
+        handle: "h3",
+        stop: function(event, ui) {
+            stop = true;
+        },
+        update: function(event, ui) {
+            var order = $('#accordion').sortable('serialize');
+            $.post("/backlog/priorize", order, function(theResponse){
+                console.debug("Sorting saved");
+                console.debug(theResponse);
+            });
+        }
+    });
+});
+
+<?php $this->headScript()->captureEnd() ?>
+
+<div id="accordion">
+    <?php foreach($this->project->getStories() as $story): ?>
+    <div id="story_<?php echo $story->getId(); ?>">
+        <h3><a href="#"><?php echo $story->getTitle(); ?></a></h3>
+        <div>
+
+            <?php echo nl2br($story->getDescription()); ?>
+
             <ul>
-                <li>Story: <?php echo $story->getDescription(); ?></li>
                 <li>Estimation: <?php echo $story->getEstimatedPoints(); ?></li>
                 <li>Status: <?php echo $story->getState(); ?></li>
             </ul>
-            Comments:
-            <ul>
-            <?php foreach ($story->getComments() AS $comment): ?>
-                <li><?php echo nl2br($comment->getComment()); ?> (von <?php echo $comment->getCreatedBy()->getName(); ?>)</li>
-            <?php endforeach; ?>
-            </ul>
-            <a href="/story/add-comment/story/<?php echo $story->getId(); ?>">Add comment</a>
-        </li>
-    <?php endforeach?>
-    </ul>
-</p>
+
+            <?php if ($story->hasComments()): ?>
+                Comments:
+                <ul>
+                <?php foreach ($story->getComments() AS $comment): ?>
+                    <li><?php echo nl2br($comment->getComment()); ?> (von <?php echo $comment->getCreatedBy()->getName(); ?>)</li>
+                <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+
+        </div>
+    </div>
+    <?php endforeach; ?>
+</div>

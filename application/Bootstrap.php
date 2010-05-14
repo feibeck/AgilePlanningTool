@@ -20,6 +20,18 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         $viewRenderer->setView($view);
 
+        $view->headScript()->appendFile(
+            "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
+        );
+        $view->headScript()->appendFile(
+            "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js"
+        );
+
+        $view->headLink()->appendStylesheet(
+            "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/hot-sneaks/jquery-ui.css",
+            "all"
+        );
+
         return $view;
     }
 
