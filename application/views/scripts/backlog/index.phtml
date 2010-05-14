@@ -64,6 +64,8 @@ $(function() {
                 <?php endforeach; ?>
                 </ul>
             <?php endif; ?>
+            
+            <a href="<?php echo $this->url(array('controller' => 'story', 'action' => 'pdf-export', 'project' => $this->project->getId(), 'story' => $story->getId()), null, true);?>" target="_new">PDF export</a>
 
         </div>
     </div>
