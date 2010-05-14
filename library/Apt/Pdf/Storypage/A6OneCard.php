@@ -99,8 +99,8 @@ class Apt_Pdf_Storypage_A6OneCard
         $lineHeight = 14;
         $lineY      = self::ACCEPTANCE_CRIT_Y;
         
-        foreach ($this->_story->getCriterias() as $criterion) {
-            $this->_page->drawText('- ' . $criterion->getCriteria(), self::ACCEPTANCE_CRIT_X, $lineY);
+        foreach ($this->_story->getCriteria() as $criterion) {
+            $this->_page->drawText('- ' . $criterion->getCriterion(), self::ACCEPTANCE_CRIT_X, $lineY);
             $lineY -= $lineHeight;
         }
     }
