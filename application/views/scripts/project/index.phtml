@@ -1,10 +1,30 @@
-<h1>Projects</h1>
+<?php $this->placeholder('heading')->set("Project List"); ?>
 
-<ul>
-<?php foreach($this->projectList as $project):?>
-    <?php $backlogUrl = $this->url(array('controller' => 'backlog', 'project' => $project->getId()), null, true)?>
-    <li><a href="<?php echo $backlogUrl?>"><?php echo $project->getName(); ?> (<?php echo $project->getId(); ?>)</a></li>
-<?php endforeach;?>
-</ul>
+<table summary="List of all available projects">
+    <colgroup>
+        <col class="colA">
+        <col class="colB">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Project</th>
+            <th>Product Owner</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->projectList as $project):?>
+        <?php $backlogUrl = $this->url(array('controller' => 'backlog', 'project' => $project->getId()), null, true); ?>
+        <tr class="<?php echo $this->cycle(array('odd', 'even')); ?>">
+            <th><a href="<?php echo $backlogUrl?>"><?php echo $project->getName(); ?></a></th>
+            <td><?php echo $project->getProductOwner()->getName(); ?></td>
+        </tr>
+    <?php endforeach;?>
+    </tbody>
+</table>
+<?php $this->headScript()->captureStart() ?>
+$(function() {
+    $('#createProject').button();
+});
+<?php $this->headScript()->captureEnd() ?>
 
-<p><a href="/project/add">Add new project</a></p>
+<a id="createProject" href="/project/add">Add new project</a>

@@ -1,23 +1,27 @@
-<h1>Backlog</h1>
+<?php $this->placeholder('heading')->set("Backlog for " . $this->project->getName()); ?>
 <p>
-    <h2>Project: <?php echo $this->project->getName(); ?></h2>
     <p>Product Owner: <?php echo $this->project->getProductOwner()->getName(); ?></p>
-    <a href="<?php echo $this->url(array('controller' => 'project'), null, true)?>">Back to projects</a>
-    <a href="<?php echo $this->url(array('controller' => 'story', 'action' => 'add', 'project' => $this->project->getId()), null, true); ?>">Add Story</a>
+
+    <?php $this->headScript()->captureStart() ?>
+    $(function() {
+        $('#addStory').button();
+    });
+    <?php $this->headScript()->captureEnd() ?>
+    <a id="addStory" href="<?php echo $this->url(array('controller' => 'story', 'action' => 'add', 'project' => $this->project->getId()), null, true); ?>">Add Story</a>
 </p>
 
 <?php $this->headScript()->captureStart() ?>
 
 $(function() {
     var stop = false;
-    $("#accordion h3").click(function(event) {
+    $("#storylist h3").click(function(event) {
         if (stop) {
             event.stopImmediatePropagation();
             event.preventDefault();
             stop = false;
         }
     });
-    $("#accordion").accordion({
+    $("#storylist").accordion({
         header: "> div > h3",
         collapsible: true,
         active: false
@@ -28,7 +32,7 @@ $(function() {
             stop = true;
         },
         update: function(event, ui) {
-            var order = $('#accordion').sortable('serialize');
+            var order = $('#storylist').sortable('serialize');
             $.post("/backlog/priorize", order, function(theResponse){
                 console.debug("Sorting saved");
                 console.debug(theResponse);
@@ -39,7 +43,7 @@ $(function() {
 
 <?php $this->headScript()->captureEnd() ?>
 
-<div id="accordion">
+<div id="storylist">
     <?php foreach($this->project->getStories() as $story): ?>
     <div id="story_<?php echo $story->getId(); ?>">
         <h3><a href="#"><?php echo $story->getTitle(); ?></a></h3>

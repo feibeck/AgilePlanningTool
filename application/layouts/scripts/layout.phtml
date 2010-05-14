@@ -7,8 +7,37 @@
     <?php echo $this->headScript() ?>
 </head>
 <body>
-    <p><a href="/">Home</a> <a href="/project">Projects</a></p>
-    <hr />
-    <?php echo $this->layout()->content ?>
+    <div class="container_16">
+        <div class="grid_16">
+            <h1 id="branding">
+                <a href="../../../">AgilePlanningTool (alpha)</a>
+            </h1>
+        </div>
+        <div class="clear"></div>
+        <div class="grid_16">
+            <ul class="nav main">
+                <li><a href="/">Home</a></li>
+                <li><a href="/project">Projects</a></li>
+                <li class="secondary">
+                    <a href="/user/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+        <div class="grid_16">
+            <h2 id="page-heading"><?php echo $this->placeholder('heading'); ?></h2>
+        </div>
+        <div class="clear"></div>
+        <div class="grid_16" style="padding-bottom: 15px;">
+            <?php echo $this->layout()->content ?>
+        </div>
+        <div class="clear"></div>
+        <div class="grid_16" id="site_info">
+            <div class="box">
+                <p>AgilePlanningTool on <a href="http://github.com/feibeck/AgilePlanningTool">Github</a>.</p>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
 </body>
 </html>
