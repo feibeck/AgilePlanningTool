@@ -1,0 +1,6 @@
+!.gitignore
+data/db.sqlite
+.buildpath
+.settings
+Proxies/
+

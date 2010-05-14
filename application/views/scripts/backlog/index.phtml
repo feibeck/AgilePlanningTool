@@ -65,12 +65,15 @@ $(function() {
                 <?php endforeach; ?>
                 </ul>
             <?php endif; ?>
+
             <?php $this->headScript()->captureStart() ?>
             $(function() {
-                $('.addComment').button();
+                $('.button').button();
             });
             <?php $this->headScript()->captureEnd() ?>
-            <a class="addComment" href="/story/add-comment/story/<?php echo $story->getId(); ?>">Add Comment</a>
+            <a class="button" href="/story/add-comment/story/<?php echo $story->getId(); ?>">Add Comment</a>
+
+            <a class="button" href="<?php echo $this->url(array('controller' => 'story', 'action' => 'pdf-export', 'project' => $this->project->getId(), 'story' => $story->getId()), null, true);?>" target="_new">PDF export</a>
 
         </div>
     </div>
