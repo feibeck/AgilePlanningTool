@@ -72,6 +72,7 @@ class BacklogController extends Zend_Controller_Action
 
         $this->_em->flush();
 
+        $this->json(true);
     }
 
 }
