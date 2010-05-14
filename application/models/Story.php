@@ -53,8 +53,8 @@ class Apt_Model_Story
     /** @Column(type="string", length=15) */
     protected $state = self::STATE_NEW;
 
-    /** @Column(type="integer") */
-    protected $priority;
+    /** @Column(type="integer", nullable=true) */
+    protected $priority = null;
 
     /**
      * @OneToMany(targetEntity="Apt_Model_StoryComment", mappedBy="story", cascade={"persist", "remove"})
