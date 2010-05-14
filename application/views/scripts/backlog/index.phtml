@@ -24,7 +24,8 @@ $(function() {
     $("#storylist").accordion({
         header: "> div > h3",
         collapsible: true,
-        active: false
+        active: false,
+        autoHeight: false
     }).sortable({
         axis: "y",
         handle: "h3",
@@ -64,6 +65,12 @@ $(function() {
                 <?php endforeach; ?>
                 </ul>
             <?php endif; ?>
+            <?php $this->headScript()->captureStart() ?>
+            $(function() {
+                $('.addComment').button();
+            });
+            <?php $this->headScript()->captureEnd() ?>
+            <a class="addComment" href="/story/add-comment/story/<?php echo $story->getId(); ?>">Add Comment</a>
 
         </div>
     </div>
