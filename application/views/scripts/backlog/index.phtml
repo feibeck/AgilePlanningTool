@@ -36,23 +36,30 @@
         <div id="storylist">
             <?php foreach($this->project->getStories() as $story): ?>
             <div id="story_<?php echo $story->getId(); ?>">
-                <h3><a href="#"><?php echo $story->getTitle(); ?></a></h3>
+                <h3>
+                    <span style="float: right; padding: 0.5em 0.5em 0 0;"><?php echo $story->getEstimatedPoints(); ?> SP</span>
+                    <a href="#"><?php echo $story->getTitle(); ?></a>
+                </h3>
                 <div>
 
+                    <p style="font-weight: bold;">
                     <?php echo nl2br($story->getDescription()); ?>
+                    </p>
 
-                    <ul>
-                        <li>Estimation: <?php echo $story->getEstimatedPoints(); ?></li>
-                        <li>Status: <?php echo $story->getState(); ?></li>
-                    </ul>
+                    <p>Status: <?php echo $story->getState(); ?></p>
 
                     <?php if ($story->hasComments()): ?>
-                        Comments:
-                        <ul>
+                        <strong>Comments:</strong>
                         <?php foreach ($story->getComments() AS $comment): ?>
-                            <li><?php echo nl2br($comment->getComment()); ?> (von <?php echo $comment->getCreatedBy()->getName(); ?>)</li>
+                        <div style="margin: 5px 0; background-color: #f0f0f0; padding: 3px;">
+                            <div><?php echo nl2br($comment->getComment()); ?></div>
+                            <div class="userinfo" style="float: none;">
+                                <?php echo $this->gravatar($comment->getCreatedBy()->getEmail(), '20'); ?>
+                                <?php echo $comment->getCreatedBy()->getName(); ?> at
+                                <?php echo $comment->getCreatedOn()->format('Y-m-d H:i:s'); ?>
+                            </div>
+                        </div>
                         <?php endforeach; ?>
-                        </ul>
                     <?php endif; ?>
 
                     <?php $this->headScript()->captureStart() ?>
