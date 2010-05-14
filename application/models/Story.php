@@ -4,7 +4,7 @@ use Doctrine\Common\Collections;
 /**
  * @Entity
  * @HasLifecycleCallbacks
- * @Table(name="story")
+ * @Table(name="story", indexes={@index(name="search_idx", columns={"priority", "title"})})
  */
 class Apt_Model_Story
 {
