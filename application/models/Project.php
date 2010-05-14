@@ -33,7 +33,7 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
 
     /**
      * @OneToMany(targetEntity="Apt_Model_Story", mappedBy="project", cascade={"persist", "remove"})
-     * @OrderBy({"priority" = "ASC"})
+     * @OrderBy({"priority"="ASC"})
      */
     protected $stories;
 
