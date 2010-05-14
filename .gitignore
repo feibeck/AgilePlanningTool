@@ -1,5 +1,6 @@
 !.gitignore
 data/db.sqlite
+.project
 .buildpath
 .settings
 Proxies/

@@ -38,8 +38,8 @@ class Apt_Model_Story
      */
     protected $id;
 
-    /** @ManyToOne(targetEntity="Apt_Model_Project", cascade={"persist"})) */
-    protected $project;
+    /** @ManyToOne(targetEntity="Apt_Model_StoryContainer", inversedBy="stories", cascade={"persist"})) */
+    protected $container;
 
     /** @Column(type="string", length=100) */
     protected $title;
@@ -305,25 +305,25 @@ class Apt_Model_Story
     }
 
     /**
-     * Sets the project
+     * Sets the story container
      *
-     * @param Apt_Model_Project $_project
+     * @param Apt_Model_StoryContainer $_container
      * @return Apt_Model_Story
      */
-    public function setProject(Apt_Model_Project $_project)
+    public function setContainer(Apt_Model_StoryContainer  $_container)
     {
-        $this->project = $_project;
+        $this->container = $_container;
         return $this;
     }
 
     /**
-     * Gets the associated project
+     * Gets the associated container
      *
-     * @return Apt_Model_Project
+     * @return Apt_Model_StoryContainer
      */
-    public function getProject()
+    public function getContainer()
     {
-        return $this->project;
+        return $this->container;
     }
 
     /**
@@ -347,10 +347,10 @@ class Apt_Model_Story
     {
         return $this->priority;
     }
-    
+
     /**
      * Returns an absolute Url to the story.
-     * 
+     *
      * @return string $url
      */
     public function getAbsoluteUrl()
@@ -358,12 +358,12 @@ class Apt_Model_Story
         $urlHelper   = Zend_Controller_Action_HelperBroker::getStaticHelper('Url');
         $request     = Zend_Controller_Front::getInstance()->getRequest();
         $absoluteUrl = $request->getScheme() . '://' . $request->getHttpHost();
-        
+
         $urlParams   = array(
             'story'      => $this->id,
             'project' => $this->project->getId()
         );
-        
+
         return $absoluteUrl . $urlHelper->simple('index', 'story', null, $urlParams);
     }
 }

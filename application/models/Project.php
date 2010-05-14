@@ -32,10 +32,15 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
     protected $productOwner;
 
     /**
-     * @OneToMany(targetEntity="Apt_Model_Story", mappedBy="project", cascade={"persist", "remove"})
-     * @OrderBy({"priority"="ASC"})
+     * @OneToMany(targetEntity="Apt_Model_Sprint", mappedBy="project", cascade={"persist", "remove"})
+     * @OrderBy({"startDate"="ASC"})
      */
-    protected $stories;
+    protected $sprints;
+
+    /**
+     * @OneToOne(targetEntity="Apt_Model_Backlog", cascade={"persist", "remove"})
+     */
+    protected $backlog;
 
     /** @Column(type="datetime") */
     protected $createdOn;
@@ -54,49 +59,35 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
      */
     public function __construct()
     {
-        $this->stories = new Collections\ArrayCollection();
+        $this->sprints = new Collections\ArrayCollection();
     }
 
     /**
-     * Sets the product owner
+     * @PreUpdate
+     */
+    public function beforeUpdate()
+    {
+        $this->changedOn = new DateTime("now");
+        $this->changedBy = $this->_currentUser;
+    }
+
+    /**
+     * @PrePersist
+     */
+    public function beforePersist()
+    {
+        $this->createdOn = new DateTime("now");
+        $this->createdBy = $this->_currentUser;
+    }
+
+    /**
+     * Returns the string identifier of the Resource
      *
-     * @param Apt_Model_User $productOwner
-     * @return Apt_Model_Project
+     * @return string
      */
-    public function setProductOwner(Apt_Model_User $_productOwner)
+    public function getResourceId()
     {
-        $this->productOwner = $_productOwner;
-        return $this;
-    }
-
-    /**
-     * Gets the pruduct owner
-     *
-     * return Apt_Model_Project
-     */
-    public function getProductOwner()
-    {
-        return $this->productOwner;
-    }
-
-    /**
-     * Gets stories
-     */
-    public function getStories()
-    {
-        return $this->stories;
-    }
-
-    /**
-     * Adds a story
-     *
-     * @param Apt_Model_Story $_story
-     * @return Apt_Model_Project
-     */
-    public function addStory(Apt_Model_Story $_story)
-    {
-        $this->stories->add($_story);
-        return $this;
+        return 'project::' . $this->id;
     }
 
     /**
@@ -110,43 +101,107 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
     }
 
     /**
-     * Sets the id
+     * Sets the product owner.
      *
-     * @param integer $_id
+     * @param Apt_Model_User $productOwner
      * @return Apt_Model_Project
      */
-    public function setId($_id)
+    public function setProductOwner(Apt_Model_User $_productOwner)
     {
-        $this->id = $_id;
+        $this->productOwner = $_productOwner;
         return $this;
     }
 
     /**
-     * Returns the string identifier of the Resource
+     * Gets the product owner.
      *
-     * @return string
+     * return Apt_Model_User
      */
-    public function getResourceId()
+    public function getProductOwner()
     {
-        return 'project::' . $this->id;
+        return $this->productOwner;
     }
 
-    public function getName()
+    /**
+     * Gets stories
+     */
+    public function getSprints()
     {
-        return $this->name;
+        return $this->sprints;
     }
 
+    /**
+     * Adds a sprint to the project.
+     *
+     * @param Apt_Model_Sprint $_sprint
+     * @return Apt_Model_Project
+     */
+    public function addSprint(Apt_Model_Sprint $_sprint)
+    {
+        $this->sprints->add($_sprint);
+        return $this;
+    }
+
+    /**
+     * Sets the project backlog.
+     *
+     * @param Apt_Model_Backlog $_backlog
+     * @return Apt_Model_Project
+     */
+    public function setBacklog(Apt_Model_Backlog $_backlog)
+    {
+        $this->backlog = $_backlog;
+        return $this;
+    }
+
+    /**
+     * Gets the project backlog.
+     *
+     * @return Apt_Model_Backlog
+     */
+    public function getBacklog()
+    {
+        return $this->backlog;
+    }
+
+    /**
+     * Sets the project name.
+     *
+     * @param string $_name
+     * @return Apt_Model_Project
+     */
     public function setName($_name)
     {
         $this->name = $_name;
         return $this;
     }
 
+    /**
+     * Gets the project name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Gets the sprint length.
+     *
+     * @return int
+     */
     public function getSprintLength()
     {
         return $this->sprintLength;
     }
 
+    /**
+     * Sets the sprint length.
+     *
+     * @param int $_length
+     * @return Apt_Model_Project
+     */
     public function setSprintLength($_length)
     {
         $this->sprintLength = (int)$_length;
@@ -154,7 +209,7 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
     }
 
     /**
-     * Get the default velocity
+     * Get the default velocity.
      *
      * @return int The velocity
      */
@@ -215,23 +270,5 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
     {
         $this->_currentUser = $_user;
         return $this;
-    }
-
-    /**
-     * @PreUpdate
-     */
-    public function beforeUpdate()
-    {
-        $this->changedOn = new DateTime("now");
-        $this->changedBy = $this->_currentUser;
-    }
-
-    /**
-     * @PrePersist
-     */
-    public function beforePersist()
-    {
-        $this->createdOn = new DateTime("now");
-        $this->createdBy = $this->_currentUser;
     }
 }
