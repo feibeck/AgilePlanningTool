@@ -62,6 +62,12 @@ class Apt_Model_Story
      */
     protected $comments;
 
+    /**
+     * @OneToMany(targetEntity="Apt_Model_StoryCriteria", mappedBy="story", cascade={"persist", "remove"})
+     * @OrderBy({"createdBy" = "ASC"})
+     */
+    protected $criterias;
+
     /** @Column(type="datetime") */
     protected $createdOn;
 
@@ -80,6 +86,7 @@ class Apt_Model_Story
     public function __construct()
     {
         $this->comments = new Collections\ArrayCollection();
+        $this->criterias = new Collections\ArrayCollection();
     }
 
     /**
@@ -168,7 +175,31 @@ class Apt_Model_Story
     }
 
     /**
-     * Gets comments
+     * Gets the story criterias
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getCriterias()
+    {
+        return $this->criterias;
+    }
+
+    /**
+     * Adds a criteria
+     *
+     * @param Apt_Model_StoryCriteria $_criteria
+     * @return Apt_Model_Story
+     */
+    public function addCriteria(Apt_Model_StoryCriteria $_criteria)
+    {
+        $this->criterias->add($_criteria);
+        return $this;
+    }
+
+    /**
+     * Gets the story comments
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getComments()
     {
