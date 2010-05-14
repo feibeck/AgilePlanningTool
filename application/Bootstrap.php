@@ -24,6 +24,39 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     }
 
     /**
+     * Initialising main navigation
+     *
+     * @return Zend_Navigation Navigation container
+     */
+    protected function _initNavigation()
+    {
+
+        $this->bootstrap('View');
+        $view = $this->getResource('View');
+
+        $container = new Zend_Navigation(
+            array(
+                array(
+                    'label'        => 'Home',
+                    'action'       => 'index',
+                    'controller'   => 'index',
+                    'module'       => 'default',
+                ),
+                array(
+                    'label'        => 'Project List',
+                    'action'       => 'index',
+                    'controller'   => 'project',
+                    'module'       => 'default',
+                ),
+            )
+        );
+
+        $view->navigation()->setContainer($container);
+
+        return $container;
+    }
+
+    /**
      * Initialise jQuery
      *
      * @return void

@@ -1,4 +1,17 @@
 <?php echo $this->doctype() ?>
+    <?php $this->headStyle()->captureStart() ?>
+    .userinfo .gravatar {
+        border:1px solid #FFFFFF;
+        margin-right:3px;
+        margin-top:-3px;
+        vertical-align:middle;
+    }
+    .userinfo {
+        float: right;
+        margin-right: 10px;
+        margin-top: 10px;
+    }
+    <?php $this->headStyle()->captureEnd() ?>
 <html>
 <head>
     <?php echo $this->headTitle() ?>
@@ -9,19 +22,25 @@
 <body>
     <div class="container_16">
         <div class="grid_16">
+            <div class="userinfo">
+                <?php if (Zend_Auth::getInstance()->hasIdentity()): ?>
+                <?php $user = Zend_Auth::getInstance()->getIdentity(); ?>
+                <?php echo $this->gravatar($user->getEmail(), 20); ?>
+                <span style="font-size: 12px; font-weight: bold;">
+                    <?php echo $user->getName(); ?>
+                    |
+                    <a href="/user/logout">Logout</a>
+                </span>
+                <?php endif; ?>
+            </div>
             <h1 id="branding">
                 <a href="../../../">AgilePlanningTool (alpha)</a>
             </h1>
+            <div class="clear"></div>
         </div>
         <div class="clear"></div>
         <div class="grid_16">
-            <ul class="nav main">
-                <li><a href="/">Home</a></li>
-                <li><a href="/project">Projects</a></li>
-                <li class="secondary">
-                    <a href="/user/logout">Logout</a>
-                </li>
-            </ul>
+            <?php echo $this->navigation()->menu()->setUlClass('nav main'); ?>
         </div>
         <div class="clear"></div>
         <div class="grid_16">
