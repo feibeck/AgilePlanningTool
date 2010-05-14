@@ -148,13 +148,41 @@ class Apt_Model_Story
      */
     public function setEstimatedPoints($_estimatedPoints)
     {
-        if (null !== $_estimatedPoints
-                && !in_array((int)$_estimatedPoints, array(0, 1, 2, 3, 5, 8, 13))) {
+        if (null !== $_estimatedPoints && false === $this->_isFibonacci($_estimatedPoints)) {
             throw new Apt_Exception_InvalidArgument('Invalid estimated points given.');
         }
 
         $this->estimatedPoints = $_estimatedPoints;
         return $this;
+    }
+    
+    /**
+     * Checks a number whether it is a Fibonacci number.
+     * 
+     * @param integer $givenValue Given value to check.
+     * 
+     * @return boolean
+     */
+    protected function _isFibonacci($givenValue)
+    {
+        $givenValue = (int) $givenValue;
+        $loopLimit  = 20;
+        
+        $current    = 0;
+        $next       = 1;
+        
+        for ($i = 0; $i < $loopLimit; $i++){
+            if ($givenValue == $current) {
+                return true;
+                
+            } else {
+                $sum     = $current + $next;
+                $current = $next;
+                $next    = $sum;
+            }
+        }
+        
+        return false;
     }
 
     /**
