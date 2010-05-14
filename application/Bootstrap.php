@@ -123,6 +123,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         );
         $config->setMetadataDriverImpl($driverImpl);
 
+        $sqlLogger = new \Doctrine\DBAL\Logging\DebugStack();
+        $config->setSQLLogger($sqlLogger);
+
         $connectionOptions = array(
             'driver' => $doctrineConfig['conn']['driver'],
             'path'   => $doctrineConfig['conn']['path'],
@@ -130,10 +133,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config);
 
-        $registry = Zend_Registry::getInstance();
-        $registry->entitymanager = $em;
+        Zend_Registry::getInstance()->set('entitymanager', $em);
 
         return $em;
     }
 
+    public function _initLogger()
+    {
+        $writer = new Zend_Log_Writer_Firebug();
+        $writer->setPriorityStyle(8, 'TABLE');
+        $writer->setEnabled(true);
+
+        $logger = new Zend_Log();
+        $logger->addWriter($writer);
+
+        Zend_Registry::getInstance()->set('Zend_Log', $logger);
+
+        return $logger;
+    }
 }

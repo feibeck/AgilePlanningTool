@@ -3,9 +3,9 @@
 /**
  * @Entity
  * @HasLifecycleCallbacks
- * @Table(name="story_criteria")
+ * @Table(name="story_criterion")
  */
-class Apt_Model_StoryCriteria
+class Apt_Model_StoryCriterion
 {
     /**
      * @var Apt_Model_User
@@ -19,12 +19,12 @@ class Apt_Model_StoryCriteria
     protected $id;
 
     /** @Column(type="text") */
-    protected $criteria;
+    protected $criterion;
 
     /** @Column(type="boolean") */
     protected $isAccepted;
 
-    /** @ManyToOne(targetEntity="Apt_Model_Story", inversedBy="criterias") */
+    /** @ManyToOne(targetEntity="Apt_Model_Story", inversedBy="criteria") */
     protected $story;
 
     /** @Column(type="datetime") */
@@ -53,7 +53,7 @@ class Apt_Model_StoryCriteria
      * Sets the id
      *
      * @param integer $_id
-     * @return Apt_Model_StoryCriteria
+     * @return Apt_Model_StoryCriterion
      */
     public function setId($_id)
     {
@@ -62,24 +62,24 @@ class Apt_Model_StoryCriteria
     }
 
     /**
-     * Gets the criteria content
+     * Gets the criterion content
      *
      * @return string
      */
-    public function getCriteria()
+    public function getCriterion()
     {
-        return $this->criteria;
+        return $this->criterion;
     }
 
     /**
-     * Sets the criteria.
+     * Sets the criterion.
      *
-     * @param $_criteria
-     * @return Apt_Model_StoryCriteria fluent interface
+     * @param $_criterion
+     * @return Apt_Model_StoryCriterion fluent interface
      */
-    public function setCriteria($_criteria)
+    public function setCriterion($_criterion)
     {
-        $this->criteria = $_criteria;
+        $this->criterion = $_criterion;
         return $this;
     }
 
@@ -97,7 +97,7 @@ class Apt_Model_StoryCriteria
      * Sets the associated story
      *
      * @param Apt_Model_Story $_story
-     * @return Apt_Model_StoryCriteria
+     * @return Apt_Model_StoryCriterion
      */
     public function setStory(Apt_Model_Story $_story)
     {
@@ -108,7 +108,7 @@ class Apt_Model_StoryCriteria
      * Sets the isAccepted flag
      *
      * @param bool $_isAccepted
-     * @return Apt_Model_StoryCriteria
+     * @return Apt_Model_StoryCriterion
      */
     public function setIsAccepted($_isAccepted = false)
     {

@@ -63,10 +63,10 @@ class Apt_Model_Story
     protected $comments;
 
     /**
-     * @OneToMany(targetEntity="Apt_Model_StoryCriteria", mappedBy="story", cascade={"persist", "remove"})
+     * @OneToMany(targetEntity="Apt_Model_StoryCriterion", mappedBy="story", cascade={"persist", "remove"})
      * @OrderBy({"createdOn"="ASC"})
      */
-    protected $criterias;
+    protected $criteria;
 
     /** @Column(type="datetime") */
     protected $createdOn;
@@ -175,24 +175,24 @@ class Apt_Model_Story
     }
 
     /**
-     * Gets the story criterias
+     * Gets the story criteria
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getCriterias()
+    public function getCriteria()
     {
-        return $this->criterias;
+        return $this->criteria;
     }
 
     /**
-     * Adds a criteria
+     * Adds a criterion
      *
      * @param Apt_Model_StoryCriteria $_criteria
      * @return Apt_Model_Story
      */
-    public function addCriteria(Apt_Model_StoryCriteria $_criteria)
+    public function addCriterion(Apt_Model_StoryCriterion $_criterion)
     {
-        $this->criterias->add($_criteria);
+        $this->criteria->add($_criterion);
         return $this;
     }
 
