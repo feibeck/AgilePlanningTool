@@ -1,14 +1,76 @@
 <?php $this->placeholder('heading')->set("Backlog for " . $this->project->getName()); ?>
-<p>
-    <p>Product Owner: <?php echo $this->project->getProductOwner()->getName(); ?></p>
 
-    <?php $this->headScript()->captureStart() ?>
-    $(function() {
-        $('#addStory').button();
-    });
-    <?php $this->headScript()->captureEnd() ?>
-    <a id="addStory" href="<?php echo $this->url(array('controller' => 'story', 'action' => 'add', 'project' => $this->project->getId()), null, true); ?>">Add Story</a>
-</p>
+<div class="grid_16">
+    <div class="box">
+        <h2>Project Summary</h2>
+        <div id="paragraphs" class="block">
+        <p>Product Owner: <?php echo $this->project->getProductOwner()->getName(); ?></p>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<div class="grid_5">
+    <div class="box">
+        <h2>Current Sprint</h2>
+    </div>
+</div>
+<div class="grid_5">
+    <div class="box">
+        <h2>Upcoming Sprints</h2>
+
+    </div>
+</div>
+<div class="grid_6">
+    <div class="box" style="padding-bottom: 10px">
+        <h2>Backlog</h2>
+        <?php $this->headScript()->captureStart() ?>
+        $(function() {
+            $('#addStory').button();
+        });
+        <?php $this->headScript()->captureEnd() ?>
+        <div id="paragraphs" class="block" style="margin-bottom: 5px">
+        <a id="addStory" href="<?php echo $this->url(array('controller' => 'story', 'action' => 'add', 'project' => $this->project->getId()), null, true); ?>">Add Story</a>
+        </div>
+
+        <div id="storylist">
+            <?php foreach($this->project->getStories() as $story): ?>
+            <div id="story_<?php echo $story->getId(); ?>">
+                <h3><a href="#"><?php echo $story->getTitle(); ?></a></h3>
+                <div>
+
+                    <?php echo nl2br($story->getDescription()); ?>
+
+                    <ul>
+                        <li>Estimation: <?php echo $story->getEstimatedPoints(); ?></li>
+                        <li>Status: <?php echo $story->getState(); ?></li>
+                    </ul>
+
+                    <?php if ($story->hasComments()): ?>
+                        Comments:
+                        <ul>
+                        <?php foreach ($story->getComments() AS $comment): ?>
+                            <li><?php echo nl2br($comment->getComment()); ?> (von <?php echo $comment->getCreatedBy()->getName(); ?>)</li>
+                        <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+
+                    <?php $this->headScript()->captureStart() ?>
+                    $(function() {
+                        $('.button').button();
+                    });
+                    <?php $this->headScript()->captureEnd() ?>
+                    <a class="button" href="/story/add-comment/story/<?php echo $story->getId(); ?>">Add Comment</a>
+
+                    <a class="button" href="<?php echo $this->url(array('controller' => 'story', 'action' => 'pdf-export', 'project' => $this->project->getId(), 'story' => $story->getId()), null, true);?>" target="_new">PDF export</a>
+
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
 
 <?php $this->headScript()->captureStart() ?>
 
@@ -43,39 +105,3 @@ $(function() {
 });
 
 <?php $this->headScript()->captureEnd() ?>
-
-<div id="storylist">
-    <?php foreach($this->project->getStories() as $story): ?>
-    <div id="story_<?php echo $story->getId(); ?>">
-        <h3><a href="#"><?php echo $story->getTitle(); ?></a></h3>
-        <div>
-
-            <?php echo nl2br($story->getDescription()); ?>
-
-            <ul>
-                <li>Estimation: <?php echo $story->getEstimatedPoints(); ?></li>
-                <li>Status: <?php echo $story->getState(); ?></li>
-            </ul>
-
-            <?php if ($story->hasComments()): ?>
-                Comments:
-                <ul>
-                <?php foreach ($story->getComments() AS $comment): ?>
-                    <li><?php echo nl2br($comment->getComment()); ?> (von <?php echo $comment->getCreatedBy()->getName(); ?>)</li>
-                <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
-
-            <?php $this->headScript()->captureStart() ?>
-            $(function() {
-                $('.button').button();
-            });
-            <?php $this->headScript()->captureEnd() ?>
-            <a class="button" href="/story/add-comment/story/<?php echo $story->getId(); ?>">Add Comment</a>
-
-            <a class="button" href="<?php echo $this->url(array('controller' => 'story', 'action' => 'pdf-export', 'project' => $this->project->getId(), 'story' => $story->getId()), null, true);?>" target="_new">PDF export</a>
-
-        </div>
-    </div>
-    <?php endforeach; ?>
-</div>
