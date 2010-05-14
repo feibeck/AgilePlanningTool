@@ -52,6 +52,11 @@ class BacklogController extends Zend_Controller_Action
         $this->view->project = $this->_em->find('Apt_Model_Project', $projectId);
     }
 
+    /**
+     * Priorize stories
+     *
+     * @return void
+     */
     public function priorizeAction()
     {
         $this->_helper->layout()->disableLayout();
