@@ -20,6 +20,11 @@ class Apt_Model_User
     /**
      * @Column(type="string")
      */
+    protected $email;
+
+    /**
+     * @Column(type="string")
+     */
     protected $username;
 
     /**
@@ -45,6 +50,26 @@ class Apt_Model_User
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set the email
+     *
+     * @param string $email The email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * Get the email
+     *
+     * @return string The email
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**
