@@ -13,12 +13,15 @@
 <div class="grid_5">
     <div class="box">
         <h2>Current Sprint</h2>
+        <div id="backlog-storylist" class="storylist" style="padding-bottom: 25px">
+        </div>
     </div>
 </div>
 <div class="grid_5">
     <div class="box">
         <h2>Upcoming Sprints</h2>
-
+        <div id="backlog-storylist" class="storylist" style="padding-bottom: 25px">
+        </div>
     </div>
 </div>
 <div class="grid_6">
@@ -33,7 +36,7 @@
         <a id="addStory" href="<?php echo $this->url(array('controller' => 'story', 'action' => 'add', 'project' => $this->project->getId()), null, true); ?>">Add Story</a>
         </div>
 
-        <div id="storylist">
+        <div id="backlog-storylist" class="storylist" style="padding-bottom: 25px">
             <?php foreach($this->project->getStories() as $story): ?>
             <div id="story_<?php echo $story->getId(); ?>">
                 <h3>
@@ -129,16 +132,22 @@ $(function() {
             console.debug(theResponse);
         });
     });
+    
+    $(".storylist").sortable({
+        connectWith: '.storylist'
+    });
+
+    $(".storylist").disableSelection();
 
     var stop = false;
-    $("#storylist h3").click(function(event) {
+    $(".storylist h3").click(function(event) {
         if (stop) {
             event.stopImmediatePropagation();
             event.preventDefault();
             stop = false;
         }
     });
-    $("#storylist").accordion({
+    $(".storylist").accordion({
         header: "> div > h3",
         collapsible: true,
         active: false,
@@ -159,7 +168,7 @@ $(function() {
     });
 
     <?php if ($this->storyId > 0): ?>
-    $('#storylist').accordion('activate', '#story_<?php echo $this->storyId; ?> > h3');
+    $('.storylist').accordion('activate', '#story_<?php echo $this->storyId; ?> > h3');
     <?php endif; ?>
 
 });
