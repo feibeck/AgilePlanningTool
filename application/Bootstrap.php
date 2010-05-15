@@ -14,6 +14,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->doctype('XHTML1_STRICT');
         $view->headTitle('AgilePlanningTool');
 
+        $view->setEncoding('UTF-8');
+
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper(
             'ViewRenderer'
         );
