@@ -82,14 +82,16 @@ class Apt_Pdf_Storypage_A6OneCard
 
     protected function _drawName()
     {
+        error_log($this->_story->getTitle());
+        
         $this->_page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD), 16);
-        $this->_page->drawText($this->_story->getTitle(), self::NAME_X, self::NAME_Y);
+        $this->_page->drawText($this->_story->getTitle(), self::NAME_X, self::NAME_Y, 'UTF-8');
     }
 
     protected function _drawStory()
     {
         $this->_page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 10);
-        $this->_page->drawText($this->_story->getDescription(), self::STORY_X, self::STORY_Y);
+        $this->_page->drawText($this->_story->getDescription(), self::STORY_X, self::STORY_Y, 'UTF-8');
     }
 
     protected function _drawAcceptanceCriteria()
@@ -100,7 +102,7 @@ class Apt_Pdf_Storypage_A6OneCard
         $lineY      = self::ACCEPTANCE_CRIT_Y;
 
         foreach ($this->_story->getCriteria() as $criterion) {
-            $this->_page->drawText('- ' . $criterion->getCriterion(), self::ACCEPTANCE_CRIT_X, $lineY);
+            $this->_page->drawText('- ' . $criterion->getCriterion(), self::ACCEPTANCE_CRIT_X, $lineY, 'UTF-8');
             $lineY -= $lineHeight;
         }
     }
@@ -108,7 +110,7 @@ class Apt_Pdf_Storypage_A6OneCard
     protected function _drawEstimation()
     {
         $this->_page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD), 20);
-        $this->_page->drawText($this->_story->getEstimatedPoints(), self::ESTIMATION_X, self::ESTIMATION_Y);
+        $this->_page->drawText($this->_story->getEstimatedPoints(), self::ESTIMATION_X, self::ESTIMATION_Y, 'UTF-8');
     }
 
     protected function _drawCode()
