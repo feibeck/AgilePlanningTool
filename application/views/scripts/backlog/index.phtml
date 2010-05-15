@@ -13,14 +13,14 @@
 <div class="grid_5">
     <div class="box">
         <h2>Current Sprint</h2>
-        <div id="backlog-storylist" class="storylist" style="padding-bottom: 25px">
+        <div id="current-storylist" class="storylist" style="padding-bottom: 25px">
         </div>
     </div>
 </div>
 <div class="grid_5">
     <div class="box">
         <h2>Upcoming Sprints</h2>
-        <div id="backlog-storylist" class="storylist" style="padding-bottom: 25px">
+        <div id="upcoming-storylist" class="storylist" style="padding-bottom: 25px">
         </div>
     </div>
 </div>
@@ -134,7 +134,14 @@ $(function() {
     });
     
     $(".storylist").sortable({
-        connectWith: '.storylist'
+        connectWith: '.storylist',
+        update: function(event, ui) {
+            var order = $('#'+event.target.id).sortable('serialize');
+            $.post("/backlog/priorize/type/"+event.target.id, order, function(theResponse){
+                console.debug("Sorting saved");
+                console.debug(theResponse);
+            });
+        }
     });
 
     $(".storylist").disableSelection();
@@ -157,13 +164,6 @@ $(function() {
         handle: "h3",
         stop: function(event, ui) {
             stop = true;
-        },
-        update: function(event, ui) {
-            var order = $('#storylist').sortable('serialize');
-            $.post("/backlog/priorize", order, function(theResponse){
-                console.debug("Sorting saved");
-                console.debug(theResponse);
-            });
         }
     });
 
