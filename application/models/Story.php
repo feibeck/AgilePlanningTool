@@ -38,7 +38,10 @@ class Apt_Model_Story
      */
     protected $id;
 
-    /** @ManyToOne(targetEntity="Apt_Model_StoryContainer", inversedBy="stories", cascade={"persist"})) */
+    /**
+     * @ManyToOne(targetEntity="Apt_Model_StoryContainer", inversedBy="stories", cascade={"persist"}))
+     * @JoinColumn(name="container_id", referencedColumnName="id")
+     */
     protected $container;
 
     /** @Column(type="string", length=100) */
@@ -155,33 +158,33 @@ class Apt_Model_Story
         $this->estimatedPoints = $_estimatedPoints;
         return $this;
     }
-    
+
     /**
      * Checks a number whether it is a Fibonacci number.
-     * 
+     *
      * @param integer $givenValue Given value to check.
-     * 
+     *
      * @return boolean
      */
     protected function _isFibonacci($givenValue)
     {
         $givenValue = (int) $givenValue;
         $loopLimit  = 20;
-        
+
         $current    = 0;
         $next       = 1;
-        
+
         for ($i = 0; $i < $loopLimit; $i++){
             if ($givenValue == $current) {
                 return true;
-                
+
             } else {
                 $sum     = $current + $next;
                 $current = $next;
                 $next    = $sum;
             }
         }
-        
+
         return false;
     }
 

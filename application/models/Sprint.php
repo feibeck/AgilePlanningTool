@@ -1,4 +1,5 @@
 <?php
+use Doctrine\Common\Collections;
 
 /**
  * @Entity
@@ -6,7 +7,9 @@
  */
 class Apt_Model_Sprint extends Apt_Model_StoryContainer
 {
-    /** @ManyToOne(targetEntity="Apt_Model_Project", cascade={"persist"})) */
+    /**
+     * @ManyToOne(targetEntity="Apt_Model_Project", cascade={"persist"}))
+     */
     protected $project;
 
     /** @Column(type="date", nullable=true) */
@@ -14,6 +17,14 @@ class Apt_Model_Sprint extends Apt_Model_StoryContainer
 
     /** @Column(type="date", nullable=true) */
     protected $endDate;
+
+    /**
+     * Contructor
+     */
+    public function __construct()
+    {
+        $this->stories = new Collections\ArrayCollection();
+    }
 
     /**
      * Sets the project

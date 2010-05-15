@@ -54,23 +54,33 @@ class ProjectController extends Zend_Controller_Action
         $request = $this->getRequest();
         if ($request->isPost() && $form->isValid($request->getPost())) {
 
-            $project = new Apt_Model_Project();
-            $project->setName($form->getValue('name'));
-            $project->setSprintLength($form->getValue('length'));
-            $project->setDefaultVelocity($form->getValue('velocity'));
-
-            $user = $this->_em->find(
+            $currentUser = $this->_em->find(
                 'Apt_Model_User',
                 Zend_Auth::getInstance()->getIdentity()->getId()
             );
-            $project->setProductOwner($user);
+            $projectName = $form->getValue('name');
+
+            $backlog = new Apt_Model_Backlog();
+            $backlog->setTitle($projectName . ' Backlog')
+                    ->setCurrentUser($currentUser);
+
+            $project = new Apt_Model_Project();
+            $project->setBacklog($backlog)
+                    ->setName($projectName)
+                    ->setSprintLength($form->getValue('length'))
+                    ->setDefaultVelocity($form->getValue('velocity'))
+                    ->setProductOwner($currentUser)
+                    ->setCurrentUser($currentUser);
 
             $this->_em->persist($project);
+
+            $backlog->setProject($project);
+            $this->_em->persist($backlog);
+
             $this->_em->flush();
 
             $this->_helper->redirector->gotoSimple('index');
             return;
-
         }
 
         $this->view->form = $form;

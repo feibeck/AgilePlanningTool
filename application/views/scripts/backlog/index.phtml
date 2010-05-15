@@ -34,7 +34,7 @@
         </div>
 
         <div id="storylist">
-            <?php foreach($this->project->getStories() as $story): ?>
+            <?php foreach($this->project->getBacklog()->getStories() as $story): ?>
             <div id="story_<?php echo $story->getId(); ?>">
                 <h3><a href="#"><?php echo $story->getTitle(); ?></a></h3>
                 <div>

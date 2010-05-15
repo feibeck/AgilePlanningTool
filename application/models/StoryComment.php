@@ -72,7 +72,7 @@ class Apt_Model_StoryComment
      * Sets the comment.
      *
      * @param $_comment
-     * @return Apt_Model_Story fluent interface
+     * @return Apt_Model_StoryComment fluent interface
      */
     public function setComment($_comment)
     {
@@ -155,7 +155,7 @@ class Apt_Model_StoryComment
      * Sets the current user
      *
      * @param Apt_Model_User $_user
-     * @return Apt_Model_Story
+     * @return Apt_Model_StoryComment
      */
     public function setCurrentUser(Apt_Model_User $_user)
     {

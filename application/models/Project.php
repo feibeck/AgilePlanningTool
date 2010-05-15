@@ -38,7 +38,8 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
     protected $sprints;
 
     /**
-     * @OneToOne(targetEntity="Apt_Model_Backlog", cascade={"persist", "remove"})
+     * @OneToOne(targetEntity="Apt_Model_Backlog", mappedBy="project", cascade={"persist", "remove"})
+     * @JoinColumn(name="backlog_id", referencedColumnName="id")
      */
     protected $backlog;
 
@@ -222,10 +223,12 @@ class Apt_Model_Project implements Zend_Acl_Resource_Interface
      * Set the default velocity
      *
      * @param int $velocity The velocity
+     * @return Apt_Model_Project
      */
     public function setDefaultVelocity($velocity)
     {
         $this->defaultVelocity = $velocity;
+        return $this;
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+use Doctrine\Common\Collections;
 
 /**
  * @Entity
@@ -6,8 +7,19 @@
  */
 class Apt_Model_Backlog extends Apt_Model_StoryContainer
 {
-    /** @ManyToOne(targetEntity="Apt_Model_Project", cascade={"persist"})) */
+    /**
+     * @OneToOne(targetEntity="Apt_Model_Project", inversedBy="backlog", cascade={"persist", "remove"})
+     * @JoinColumn(name="project_id", referencedColumnName="id")
+     */
     protected $project;
+
+    /**
+     * Contructor
+     */
+    public function __construct()
+    {
+        $this->stories = new Collections\ArrayCollection();
+    }
 
     /**
      * Sets the project

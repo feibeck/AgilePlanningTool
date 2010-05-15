@@ -1,6 +1,4 @@
 <?php
-use Doctrine\Common\Collections;
-
 /**
  * @Entity
  * @HasLifecycleCallbacks
@@ -9,12 +7,18 @@ use Doctrine\Common\Collections;
  * @DiscriminatorColumn(name="containerType", type="string")
  * @DiscriminatorMap({"sprint" = "Apt_Model_Sprint", "backlog" = "Apt_Model_Backlog"})
  */
-class Apt_Model_StoryContainer
+abstract class Apt_Model_StoryContainer
 {
     /**
      * @var Apt_Model_User
      */
     protected $_currentUser = null;
+
+    /**
+     * @OneToMany(targetEntity="Apt_Model_Story", mappedBy="container", cascade={"persist", "remove"})
+     * @OrderBy({"priority"="ASC"})
+     */
+    protected $stories;
 
     /**
      * @Id @Column(name="id", type="integer")
@@ -28,12 +32,6 @@ class Apt_Model_StoryContainer
     /** @Column(type="string", nullable=true) */
     protected $description;
 
-    /**
-     * @OneToMany(targetEntity="Apt_Model_Story", mappedBy="container", cascade={"persist", "remove"})
-     * @OrderBy({"priority"="ASC"})
-     */
-    protected $stories;
-
     /** @Column(type="datetime") */
     protected $createdOn;
 
@@ -45,14 +43,6 @@ class Apt_Model_StoryContainer
 
     /** @ManyToOne(targetEntity="Apt_Model_User", cascade={"persist"})) */
     protected $changedBy;
-
-    /**
-     * Contructor
-     */
-    public function __construct()
-    {
-        $this->stories = new Collections\ArrayCollection();
-    }
 
     /**
      * @PreUpdate
@@ -133,6 +123,21 @@ class Apt_Model_StoryContainer
     }
 
     /**
+     * Sets the project
+     *
+     * @param Apt_Model_Project $_project
+     * @return Apt_Model_Backlog
+     */
+    abstract public function setProject(Apt_Model_Project $_project);
+
+    /**
+     * Gets the associated project
+     *
+     * @return Apt_Model_Project
+     */
+    abstract public function getProject();
+
+    /**
      * Gets the stories
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
@@ -153,10 +158,6 @@ class Apt_Model_StoryContainer
         $this->stories->add($_story);
         return $this;
     }
-
-
-
-
 
     /**
      * @return the $createdOn
