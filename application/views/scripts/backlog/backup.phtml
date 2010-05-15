@@ -2,17 +2,26 @@
 
 <div id="backlogcontainer">
 
-        <div id="currentsprint" class="column">
+    <div id="projectsummary" class="north">
+
+        <h2>Project Summary</h2>
+        <p>Product Owner: <?php echo $this->project->getProductOwner()->getName(); ?></p>
+
+    </div>
+
+    <div id="backlogs" class="center">
+
+        <div id="currentsprint">
             <h2>Current Sprint</h2>
         </div>
 
-        <div id="sprints" class="column">
+        <div id="sprints">
             <h2>Upcoming Sprints</h2>
         </div>
 
-        <div id="backlog" class="column">
-            <h2>Backlog</h2>
+        <div id="backlog">
 
+            <h2>Backlog</h2>
             <?php $this->headScript()->captureStart() ?>
             $(function() {
                 $('#addStory').button();
@@ -98,49 +107,59 @@
 
         </div>
 
+    </div>
+
 </div>
 
 <?php $this->headStyle()->captureStart(); ?>
 
-    .column {
-        background-color: #DBDBDB;
-    }
-
-    .column h2 {
-        background-color: #C9C7C9;
-        margin: 0;
-        padding: 2px;
-        font-size: 1.1em;
-    }
-
     #backlogcontainer {
+        width: 100%;
     }
 
     #currentsprint {
-        float: left;
-        width: 32%;
-        height: 100%;
-        margin-right: 1%;
     }
 
     #sprints {
-        float: left;
-        width: 32%;
-        height: 100%;
-        margin-right: 1%;
     }
 
     #backlog {
-        float: left;
-        width: 32%;
-        height: 100%;
-        margin-right: 1%;
+    }
+
+    #projectsummary {
+        widht: 100%;
+        background-color: #DBDBDB;
+        border: 1px solid black;
+    }
+
+    h2 {
+        margin: 0;
+        padding: 2px;
+        background-color: black;
+        color: white;
+        font-size: 1.1em;
     }
 
 <?php $this->headStyle()->captureEnd(); ?>
 <?php $this->headScript()->captureStart() ?>
 
 $(function() {
+
+    $('#backlogcontainer').layout({
+        type: 'border',
+        resize: false
+    });
+
+    $('#backlogs').layout({
+        type: 'grid',
+        columns: 3,
+        rows: 1,
+        items: [
+            $('#currentsprint'),
+            $('#sprints'),
+            $('#backlog')
+        ]
+    });
 
     $(".criteria_accepted").change(function(event) {
         var id = event.target.id;

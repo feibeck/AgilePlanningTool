@@ -73,6 +73,26 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             "/jquery/js/jquery-ui-1.8.1.custom.min.js"
         );
 
+        $view->headScript()->appendFile(
+            "/jquery/js/jquery.sizes.min.js"
+        );
+
+        $view->headScript()->appendFile(
+            "/jquery/js/jlayout.border.min.js"
+        );
+
+        $view->headScript()->appendFile(
+            "/jquery/js/jlayout.grid.min.js"
+        );
+
+        $view->headScript()->appendFile(
+            "/jquery/js/jlayout.flexgrid.min.js"
+        );
+
+        $view->headScript()->appendFile(
+            "/jquery/js/jquery.jlayout.min.js"
+        );
+
         $view->headLink()->appendStylesheet(
             "/jquery/css/hot-sneaks/jquery-ui-1.8.1.custom.css",
             "all"
@@ -84,7 +104,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      *
      * @return void
      */
-    protected function _initCssGrid()
+    protected function _aaainitCssGrid()
     {
         $this->bootstrap('View');
         $view = $this->getResource('View');
