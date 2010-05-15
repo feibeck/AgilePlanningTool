@@ -10,8 +10,8 @@
  */
 
 /**
- * Acl 
- * 
+ * Acl
+ *
  * @category  AgilePlanningTool
  * @package   Apt_Acl
  * @author    Tobias Schlüter <tobias.schlueter@mayflower.de>
@@ -29,41 +29,41 @@
          $this->_initResources();
          $this->_initPermissions();
      }
-     
+
      /**
       * Initialize roles.
       */
-     protected _initRoles()
+     protected function _initRoles()
      {
          $this->addRole(new Zend_Acl_Role('guest'));
          $this->addRole(new Zend_Acl_Role('user'), 'guest');
          $this->addRole(new Zend_Acl_Role('productowner'), 'user');
      }
-     
+
      /**
       * Initialize resources.
       */
-     protected _initResources()
+     protected function _initResources()
      {
          $this->add(new Zend_Acl_Resource('project'));
          $this->add(new Zend_Acl_Resource('backlog'));
      }
-     
+
      /**
       * Initialize permissions.
       */
-     protected _initPermissions()
+     protected function _initPermissions()
      {
          // guest
          $this->deny('guest', 'project', 'view');
          $this->deny('guest', 'project', 'edit');
          $this->deny('guest', 'backlog', 'view');
          $this->deny('guest', 'backlog', 'edit');
-         
+
          // user
          $this->allow('user', 'project', 'view');
          $this->allow('user', 'backlog', 'view');
-         
+
          // productowner
          $this->allow('productowner', 'project', 'edit');
          $this->allow('productowner', 'backlog', 'edit');
