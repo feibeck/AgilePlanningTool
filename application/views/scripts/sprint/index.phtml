@@ -1,0 +1,44 @@
+<?php $this->placeholder('heading')->set("Sprint List for " . $this->project->getName()); ?>
+
+<div class="grid_16">
+    <div class="box">
+        <h2>Project Summary</h2>
+        <div id="paragraphs" class="block">
+        <p>Product Owner: <?php echo $this->project->getProductOwner()->getName(); ?></p>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<table summary="List of all project sprints">
+    <colgroup>
+        <col class="colA">
+        <col class="colB">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Startdate</th>
+            <th>Enddate</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->sprintList as $sprint):?>
+        <?php $backlogUrl = $this->url(array('controller' => 'backlog', 'project' => $sprint->getId()), null, true); ?>
+        <tr class="<?php echo $this->cycle(array('odd', 'even')); ?>">
+            <td><?php echo $sprint->getId(); ?></td>
+            <th><a href="<?php echo $backlogUrl?>"><?php echo $sprint->getTitle(); ?></a></th>
+            <td><?php echo $sprint->getStartDate(); ?></td>
+            <td><?php echo $sprint->getEndDate(); ?></td>
+        </tr>
+    <?php endforeach;?>
+    </tbody>
+</table>
+<?php $this->headScript()->captureStart() ?>
+$(function() {
+    $('#createSprint').button();
+});
+<?php $this->headScript()->captureEnd() ?>
+
+<a id="createSprint" href="<?php echo $this->url(array('controller' => 'sprint', 'action' => 'add', 'project' => $this->project->getId()), null, true); ?>">Add new sprint</a>
