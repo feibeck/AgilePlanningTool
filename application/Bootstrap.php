@@ -160,8 +160,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $config->setSQLLogger($sqlLogger);
 
         $connectionOptions = array(
-            'driver' => $doctrineConfig['conn']['driver'],
-            'path'   => $doctrineConfig['conn']['path'],
+            'driver'  => $doctrineConfig['conn']['driver'],
+            'path'    => $doctrineConfig['conn']['path'],
+            'charset' => 'UTF8',
         );
 
         $em = \Doctrine\ORM\EntityManager::create($connectionOptions, $config);
