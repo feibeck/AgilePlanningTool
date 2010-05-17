@@ -59,6 +59,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     }
 
     /**
+     * Init response
+     *
+     * @return void
+     */
+    protected function _initResponse()
+    {
+        $this->bootstrap('FrontController');
+        $frontcontroller = $this->getResource('FrontController');
+
+        $response = $frontcontroller->getResponse();
+        if (is_null($response)) {
+            $response = new Zend_Controller_Response_Http();
+            $frontcontroller->setResponse($response);
+        }
+
+        $response->setHeader('Content-Type', 'text/html; charset=UTF-8', true);
+    }
+
+    /**
      * Initialise jQuery
      *
      * @return void
